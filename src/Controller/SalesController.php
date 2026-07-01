@@ -24,7 +24,13 @@ class SalesController extends AppController
             ->all();
 
         $totalRevenue = $OfflineSales->find()->sumOf('total_amount') ?? 0;
-        $totalProfit  = $totalRevenue * 0.5;
+        
+        $totalProfit = 0;
+        foreach ($sales as $sale) {
+            foreach ($sale->offline_sale_items as $item) {
+                $totalProfit += ($item->unit_price - $item->cost_price) * $item->quantity;
+            }
+        }
 
         $this->set(compact('sales', 'totalRevenue', 'totalProfit'));
     }
@@ -61,12 +67,14 @@ class SalesController extends AppController
                 $product  = $Products->get((int)$item['product_id']);
                 $qty      = (int)$item['quantity'];
                 $price    = $product->price;
+                $cost     = $product->cost_price ?? ($price * 0.5);
                 $subtotal = $price * $qty;
                 $total   += $subtotal;
                 $lineItems[] = [
                     'product_id'   => $product->id,
                     'product_name' => $product->name,
                     'unit_price'   => $price,
+                    'cost_price'   => $cost,
                     'quantity'     => $qty,
                     'subtotal'     => $subtotal,
                 ];
@@ -136,7 +144,18 @@ class SalesController extends AppController
         $offlineTotal = $offlineSales->sumOf('total_amount') ?? 0;
         $onlineTotal  = $onlineOrders->sumOf('total_amount') ?? 0;
         $grandTotal   = $offlineTotal + $onlineTotal;
-        $totalProfit  = $grandTotal * 0.5;
+        
+        $totalProfit = 0;
+        foreach ($offlineSales as $sale) {
+            foreach ($sale->offline_sale_items as $item) {
+                $totalProfit += ($item->unit_price - $item->cost_price) * $item->quantity;
+            }
+        }
+        foreach ($onlineOrders as $order) {
+            foreach ($order->order_items as $item) {
+                $totalProfit += ($item->unit_price - $item->cost_price) * $item->quantity;
+            }
+        }
 
         // Build PDF content using mPDF-style HTML
         $reportData = [

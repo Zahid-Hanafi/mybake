@@ -4,7 +4,7 @@
 <div style="background:#fff; border-radius:16px; padding:1.25rem; border:1px solid var(--border-light); margin-bottom:1.5rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; box-shadow:var(--shadow-sm);">
     <span style="font-weight:600; font-size:0.875rem; color:var(--text-muted);">Filter by Status:</span>
     <?php foreach ([''=>'All','pending'=>'Pending','shipping'=>'Shipping','complete'=>'Completed','cancelled'=>'Cancelled'] as $val => $label): ?>
-    <a href="/admin/orders<?= $val ? '?status=' . $val : '' ?>"
+    <a href="<?= $this->Url->build('/admin/orders<?= $val ? '?status=' . $val : '' ?>') ?>"
        class="btn btn-sm <?= $statusFilter === $val ? 'btn-primary' : 'btn-outline' ?>"
        style="<?= $statusFilter === $val ? '' : 'border-color:var(--border-light);' ?>">
         <?= $label ?>
@@ -82,7 +82,7 @@ function updateOrderStatus(orderId, status, selectEl) {
     form.append('status', status);
     selectEl.disabled = true;
 
-    fetch('/admin/orders/status/' + orderId, { method: 'POST', body: form })
+    fetch('<?= $this->Url->build('/admin/orders/status/') ?>' + orderId, { method: 'POST', body: form })
         .then(r => r.json())
         .then(d => {
             selectEl.disabled = false;

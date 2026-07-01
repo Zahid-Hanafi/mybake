@@ -63,7 +63,7 @@
 
     <!-- Quick Actions -->
     <div style="display:flex; flex-direction:column; gap:1rem;">
-        <a href="/admin/orders" style="background:#fff; border-radius:16px; border:1px solid var(--border-light); padding:1.25rem; display:flex; align-items:center; gap:1rem; text-decoration:none; color:var(--text-dark); transition:var(--transition); box-shadow:var(--shadow-sm);" onmouseover="this.style.borderColor='var(--primary-teal)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.borderColor='var(--border-light)'; this.style.boxShadow='var(--shadow-sm)';">
+        <a href="<?= $this->Url->build('/admin/orders') ?>" style="background:#fff; border-radius:16px; border:1px solid var(--border-light); padding:1.25rem; display:flex; align-items:center; gap:1rem; text-decoration:none; color:var(--text-dark); transition:var(--transition); box-shadow:var(--shadow-sm);" onmouseover="this.style.borderColor='var(--primary-teal)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.borderColor='var(--border-light)'; this.style.boxShadow='var(--shadow-sm)';">
             <div style="width:48px; height:48px; background:var(--primary-teal-xlight); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                 <i class="fas fa-clipboard-list" style="color:var(--primary-teal); font-size:1.2rem;"></i>
             </div>
@@ -74,7 +74,7 @@
             <i class="fas fa-chevron-right" style="margin-left:auto; color:var(--text-muted); font-size:0.75rem;"></i>
         </a>
 
-        <a href="/admin/sales/add" style="background:#fff; border-radius:16px; border:1px solid var(--border-light); padding:1.25rem; display:flex; align-items:center; gap:1rem; text-decoration:none; color:var(--text-dark); transition:var(--transition); box-shadow:var(--shadow-sm);" onmouseover="this.style.borderColor='var(--secondary-gold)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.borderColor='var(--border-light)'; this.style.boxShadow='var(--shadow-sm)';">
+        <a href="<?= $this->Url->build('/admin/sales/add') ?>" style="background:#fff; border-radius:16px; border:1px solid var(--border-light); padding:1.25rem; display:flex; align-items:center; gap:1rem; text-decoration:none; color:var(--text-dark); transition:var(--transition); box-shadow:var(--shadow-sm);" onmouseover="this.style.borderColor='var(--secondary-gold)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.borderColor='var(--border-light)'; this.style.boxShadow='var(--shadow-sm)';">
             <div style="width:48px; height:48px; background:var(--secondary-gold-xlight); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                 <i class="fas fa-plus-circle" style="color:var(--secondary-gold-dark); font-size:1.2rem;"></i>
             </div>
@@ -85,7 +85,7 @@
             <i class="fas fa-chevron-right" style="margin-left:auto; color:var(--text-muted); font-size:0.75rem;"></i>
         </a>
 
-        <a href="/admin/sales/report" style="background:#fff; border-radius:16px; border:1px solid var(--border-light); padding:1.25rem; display:flex; align-items:center; gap:1rem; text-decoration:none; color:var(--text-dark); transition:var(--transition); box-shadow:var(--shadow-sm);" onmouseover="this.style.borderColor='#15803D'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.borderColor='var(--border-light)'; this.style.boxShadow='var(--shadow-sm)';">
+        <a href="<?= $this->Url->build('/admin/sales/report') ?>" style="background:#fff; border-radius:16px; border:1px solid var(--border-light); padding:1.25rem; display:flex; align-items:center; gap:1rem; text-decoration:none; color:var(--text-dark); transition:var(--transition); box-shadow:var(--shadow-sm);" onmouseover="this.style.borderColor='#15803D'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.borderColor='var(--border-light)'; this.style.boxShadow='var(--shadow-sm)';">
             <div style="width:48px; height:48px; background:#DCFCE7; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                 <i class="fas fa-file-pdf" style="color:#15803D; font-size:1.2rem;"></i>
             </div>
@@ -96,7 +96,7 @@
             <i class="fas fa-chevron-right" style="margin-left:auto; color:var(--text-muted); font-size:0.75rem;"></i>
         </a>
 
-        <a href="/admin/stock" style="background:#fff; border-radius:16px; border:1px solid var(--border-light); padding:1.25rem; display:flex; align-items:center; gap:1rem; text-decoration:none; color:var(--text-dark); transition:var(--transition); box-shadow:var(--shadow-sm);" onmouseover="this.style.borderColor='#7C3AED'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.borderColor='var(--border-light)'; this.style.boxShadow='var(--shadow-sm)';">
+        <a href="<?= $this->Url->build('/admin/stock') ?>" style="background:#fff; border-radius:16px; border:1px solid var(--border-light); padding:1.25rem; display:flex; align-items:center; gap:1rem; text-decoration:none; color:var(--text-dark); transition:var(--transition); box-shadow:var(--shadow-sm);" onmouseover="this.style.borderColor='#7C3AED'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.borderColor='var(--border-light)'; this.style.boxShadow='var(--shadow-sm)';">
             <div style="width:48px; height:48px; background:#F5F3FF; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                 <i class="fas fa-boxes-stacked" style="color:#7C3AED; font-size:1.2rem;"></i>
             </div>
@@ -115,7 +115,7 @@
         <div style="font-weight:700; font-size:1rem; display:flex; align-items:center; gap:0.6rem;">
             <i class="fas fa-boxes-stacked" style="color:var(--primary-teal);"></i> Product Stock Overview
         </div>
-        <a href="/admin/stock" class="btn btn-outline btn-sm">Manage All</a>
+        <a href="<?= $this->Url->build('/admin/stock') ?>" class="btn btn-outline btn-sm">Manage All</a>
     </div>
 
     <div class="table-wrapper" style="border-radius:0; border:none;">
@@ -253,7 +253,7 @@ function confirmRestock() {
     if (!qty || qty < 1) return;
     const form = new FormData();
     form.append('quantity', qty);
-    fetch('/admin/stock/restock/' + _restockId, { method: 'POST', body: form })
+    fetch('<?= $this->Url->build('/admin/stock/restock/') ?>' + _restockId, { method: 'POST', body: form })
         .then(r => r.json())
         .then(d => {
             if (d.success) {
@@ -265,7 +265,7 @@ function confirmRestock() {
         });
 }
 function toggleProductStatus(id, btn) {
-    fetch('/admin/stock/toggle/' + id, { method: 'POST' })
+    fetch('<?= $this->Url->build('/admin/stock/toggle/') ?>' + id, { method: 'POST' })
         .then(r => r.json())
         .then(d => {
             if (d.success) {

@@ -5,6 +5,11 @@ namespace App\Controller;
 
 class PagesController extends AppController
 {
+    public function beforeFilter(\Cake\Event\EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions(['dashboard', 'about', 'contact', 'display']);
+    }
     // Customer dashboard — home page after login
     public function dashboard()
     {

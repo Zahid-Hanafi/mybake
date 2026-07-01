@@ -115,7 +115,7 @@
         <i class="fas fa-trophy" style="font-size:3rem; margin-bottom:1rem; display:block; opacity:0.9;"></i>
         <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:0.75rem;">Awards & Achievements</h3>
         <p style="opacity:0.85; font-size:0.875rem; line-height:1.7; margin-bottom:1.5rem;">MyBake has been recognized for its exceptional quality and contribution to preserving traditional Malaysian culinary heritage.</p>
-        <a href="/img/mybake-achievements.pdf" target="_blank" class="btn" style="background:rgba(255,255,255,0.2); color:#fff; border:2px solid rgba(255,255,255,0.4); border-radius:10px;">
+        <a href="<?= $this->Url->build('/img/mybake-achievements.pdf') ?>" target="_blank" class="btn" style="background:rgba(255,255,255,0.2); color:#fff; border:2px solid rgba(255,255,255,0.4); border-radius:10px;">
             <i class="fas fa-file-pdf"></i> View Our Achievements (PDF)
         </a>
     </div>
@@ -124,7 +124,7 @@
         <i class="fas fa-envelope" style="font-size:3rem; margin-bottom:1rem; display:block; opacity:0.9;"></i>
         <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:0.75rem;">Get In Touch</h3>
         <p style="opacity:0.85; font-size:0.875rem; line-height:1.7; margin-bottom:1.5rem;">Have questions or want to place a bulk order? We'd love to hear from you. Visit our contact page for all our details.</p>
-        <a href="/contact" class="btn" style="background:rgba(255,255,255,0.2); color:#fff; border:2px solid rgba(255,255,255,0.4); border-radius:10px;">
+        <a href="<?= $this->Url->build('/contact') ?>" class="btn" style="background:rgba(255,255,255,0.2); color:#fff; border:2px solid rgba(255,255,255,0.4); border-radius:10px;">
             <i class="fas fa-arrow-right"></i> Contact Us
         </a>
     </div>

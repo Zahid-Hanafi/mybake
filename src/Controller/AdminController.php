@@ -30,7 +30,21 @@ class AdminController extends AppController
         $offlineRevenue = $OfflineSales->find()->sumOf('total_amount') ?? 0;
 
         $totalRevenue  = $onlineRevenue + $offlineRevenue;
-        $totalProfit   = $totalRevenue * 0.5;   // 50% profit margin
+        
+        $totalProfit = 0;
+        $allOnline = $Orders->find()->where(['status IN' => ['pending', 'shipping', 'complete']])->contain(['OrderItems'])->all();
+        foreach ($allOnline as $order) {
+            foreach ($order->order_items as $item) {
+                $totalProfit += ($item->unit_price - $item->cost_price) * $item->quantity;
+            }
+        }
+        $allOffline = $OfflineSales->find()->contain(['OfflineSaleItems'])->all();
+        foreach ($allOffline as $sale) {
+            foreach ($sale->offline_sale_items as $item) {
+                $totalProfit += ($item->unit_price - $item->cost_price) * $item->quantity;
+            }
+        }
+        
         $totalOrders   = $Orders->find()->count();
 
         // Monthly revenue for chart (last 6 months)

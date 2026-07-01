@@ -19,7 +19,7 @@
 
 <!-- ── SEARCH & FILTER ────────────────────────────────────── -->
 <div style="background:#fff; border-radius:16px; padding:1.25rem; box-shadow:var(--shadow-sm); border:1px solid var(--border-light); margin-bottom:2rem; display:flex; flex-wrap:wrap; gap:0.875rem; align-items:flex-end;">
-    <form method="get" action="/products" style="display:flex; flex-wrap:wrap; gap:0.875rem; align-items:flex-end; flex:1;">
+    <form method="get" action="<?= $this->Url->build('/products') ?>" style="display:flex; flex-wrap:wrap; gap:0.875rem; align-items:flex-end; flex:1;">
         <div style="flex:1; min-width:200px;">
             <label class="form-label" style="margin-bottom:0.3rem;">Search</label>
             <div style="position:relative;">
@@ -38,7 +38,7 @@
         </div>
         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
         <?php if ($search || $lineFilter): ?>
-        <a href="/products" class="btn btn-outline"><i class="fas fa-times"></i> Clear</a>
+        <a href="<?= $this->Url->build('/products') ?>" class="btn btn-outline"><i class="fas fa-times"></i> Clear</a>
         <?php endif; ?>
     </form>
 </div>
@@ -96,7 +96,7 @@ foreach ($grouped as $lineId => $data):
     <i class="fas fa-magnifying-glass" style="font-size:3rem; color:var(--text-muted); opacity:0.4; display:block; margin-bottom:1rem;"></i>
     <h3 style="font-family:'Playfair Display',serif; margin-bottom:0.5rem;">No products found</h3>
     <p style="color:var(--text-muted);">Try a different search term or browse all categories.</p>
-    <a href="/products" class="btn btn-primary" style="margin-top:1.25rem;">View All Products</a>
+    <a href="<?= $this->Url->build('/products') ?>" class="btn btn-primary" style="margin-top:1.25rem;">View All Products</a>
 </div>
 <?php endif; ?>
 
@@ -107,7 +107,7 @@ foreach ($grouped as $lineId => $data):
             <p class="section-label">📦 Your purchases</p>
             <h2 class="section-title">My Orders</h2>
         </div>
-        <a href="/my-orders" class="btn btn-outline btn-sm">View All Orders</a>
+        <a href="<?= $this->Url->build('/my-orders') ?>" class="btn btn-outline btn-sm">View All Orders</a>
     </div>
 
     <?php if (!empty($myOrders) && count($myOrders) > 0): ?>
@@ -141,9 +141,9 @@ foreach ($grouped as $lineId => $data):
                     </td>
                     <td>
                         <?php if ($order->status === 'pending'): ?>
-                        <a href="/my-orders/edit/<?= $order->id ?>" class="btn btn-outline btn-sm"><i class="fas fa-pencil"></i></a>
+                        <a href="<?= $this->Url->build('/my-orders/edit/<?= $order->id ?>') ?>" class="btn btn-outline btn-sm"><i class="fas fa-pencil"></i></a>
                         <?php else: ?>
-                        <a href="/my-orders/view/<?= $order->id ?>" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i></a>
+                        <a href="<?= $this->Url->build('/my-orders/view/<?= $order->id ?>') ?>" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i></a>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -209,7 +209,7 @@ function renderProductCard($product, $isNewArrival = false) {
     ob_start(); ?>
     <div class="product-card">
         <div class="product-card-img">
-            <img src="/img/products/<?= htmlspecialchars($product->image ?? 'default.jpg') ?>"
+            <img src="<?= $this->Url->build('/img/products/<?= htmlspecialchars($product->image ?? 'default.jpg') ?>') ?>"
                  onerror="this.src='https://placehold.co/280x280/E8F7F7/1A7A7A?text=MyBake'"
                  alt="<?= htmlspecialchars($product->name) ?>">
             <?php if ($product->status !== 'open'): ?>

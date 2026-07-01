@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
     <!-- MyBake CSS -->
-    <link rel="stylesheet" href="<?= $this->request->getWebroot() ?>css/mybake.css">
+    <link rel="stylesheet" href="<?= $this->request->getAttribute('webroot') ?>css/mybake.css">
 
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -86,41 +86,41 @@
         <p class="nav-section-label">Menu</p>
         <ul style="list-style:none;">
             <li>
-                <a href="/dashboard" class="nav-item <?= ($controller === 'Pages' && $action === 'dashboard') ? 'active' : '' ?>">
+                <a href="<?= $this->Url->build('/dashboard') ?>" class="nav-item <?= ($controller === 'Pages' && $action === 'dashboard') ? 'active' : '' ?>">
                     <i class="fas fa-house"></i> Dashboard
                 </a>
             </li>
             <li>
-                <a href="/products" class="nav-item <?= ($controller === 'Products') ? 'active' : '' ?>">
+                <a href="<?= $this->Url->build('/products') ?>" class="nav-item <?= ($controller === 'Products') ? 'active' : '' ?>">
                     <i class="fas fa-cookie-bite"></i> Our Products
                 </a>
             </li>
             <li>
-                <a href="/my-orders" class="nav-item <?= ($controller === 'Orders') ? 'active' : '' ?>">
+                <a href="<?= $this->Url->build('/my-orders') ?>" class="nav-item <?= ($controller === 'Orders') ? 'active' : '' ?>">
                     <i class="fas fa-bag-shopping"></i> My Orders
                 </a>
             </li>
 
             <p class="nav-section-label" style="margin-top:1rem;">Information</p>
             <li>
-                <a href="/about" class="nav-item <?= ($action === 'about') ? 'active' : '' ?>">
+                <a href="<?= $this->Url->build('/about') ?>" class="nav-item <?= ($action === 'about') ? 'active' : '' ?>">
                     <i class="fas fa-circle-info"></i> About Us
                 </a>
             </li>
             <li>
-                <a href="/contact" class="nav-item <?= ($action === 'contact') ? 'active' : '' ?>">
+                <a href="<?= $this->Url->build('/contact') ?>" class="nav-item <?= ($action === 'contact') ? 'active' : '' ?>">
                     <i class="fas fa-envelope"></i> Contact Us
                 </a>
             </li>
 
             <p class="nav-section-label" style="margin-top:1rem;">Account</p>
             <li>
-                <a href="/profile" class="nav-item <?= ($controller === 'Users' && $action === 'profile') ? 'active' : '' ?>">
+                <a href="<?= $this->Url->build('/profile') ?>" class="nav-item <?= ($controller === 'Users' && $action === 'profile') ? 'active' : '' ?>">
                     <i class="fas fa-user-circle"></i> My Profile
                 </a>
             </li>
             <li>
-                <a href="/profile/addresses" class="nav-item <?= ($controller === 'Addresses') ? 'active' : '' ?>">
+                <a href="<?= $this->Url->build('/profile/addresses') ?>" class="nav-item <?= ($controller === 'Addresses') ? 'active' : '' ?>">
                     <i class="fas fa-map-marker-alt"></i> My Addresses
                 </a>
             </li>
@@ -129,7 +129,7 @@
 
     <!-- Logout -->
     <div class="sidebar-footer">
-        <a href="/logout" class="logout-btn" id="logoutBtn">
+        <a href="<?= $this->Url->build('/logout') ?>" class="logout-btn" id="logoutBtn">
             <i class="fas fa-right-from-bracket"></i> Logout
         </a>
     </div>
@@ -154,7 +154,7 @@
             <i class="fas fa-bag-shopping"></i>
             <p style="font-weight:600; margin-bottom:0.5rem;">Your cart is empty</p>
             <p style="font-size:0.85rem;">Browse our products and add items to your cart!</p>
-            <a href="/products" class="btn btn-primary btn-sm" style="margin-top:1rem;" onclick="closeCart()">Browse Products</a>
+            <a href="<?= $this->Url->build('/products') ?>" class="btn btn-primary btn-sm" style="margin-top:1rem;" onclick="closeCart()">Browse Products</a>
         </div>
         <div id="cartItemsContainer"></div>
     </div>
@@ -164,7 +164,7 @@
             <span style="font-weight:600; color:var(--text-muted);">Total</span>
             <span style="font-size:1.25rem; font-weight:700; color:var(--primary-teal);" id="cartTotal">RM 0.00</span>
         </div>
-        <a href="/checkout" class="btn btn-gold btn-full btn-lg">
+        <a href="<?= $this->Url->build('/checkout') ?>" class="btn btn-gold btn-full btn-lg">
             <i class="fas fa-credit-card"></i> Proceed to Checkout
         </a>
     </div>
@@ -181,7 +181,7 @@
                         <span></span><span></span><span></span>
                     </div>
                 </button>
-                <a href="/dashboard" class="brand-logo">
+                <a href="<?= $this->Url->build('/dashboard') ?>" class="brand-logo">
                     <div class="brand-icon"><span>MB</span></div>
                     <div>
                         <div class="brand-name">MyBake</div>
@@ -220,14 +220,14 @@
                             <div style="font-weight:600; font-size:0.875rem;"><?= h($fullName) ?></div>
                             <div style="font-size:0.75rem; color:var(--text-muted);"><?= h($identity ? $identity->get('email') : '') ?></div>
                         </div>
-                        <a href="/profile" style="display:flex; align-items:center; gap:0.6rem; padding:0.75rem 1rem; font-size:0.875rem; color:var(--text-dark); transition:background 0.15s;" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">
+                        <a href="<?= $this->Url->build('/profile') ?>" style="display:flex; align-items:center; gap:0.6rem; padding:0.75rem 1rem; font-size:0.875rem; color:var(--text-dark); transition:background 0.15s;" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">
                             <i class="fas fa-user" style="width:16px; color:var(--primary-teal);"></i> My Profile
                         </a>
-                        <a href="/my-orders" style="display:flex; align-items:center; gap:0.6rem; padding:0.75rem 1rem; font-size:0.875rem; color:var(--text-dark); transition:background 0.15s;" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">
+                        <a href="<?= $this->Url->build('/my-orders') ?>" style="display:flex; align-items:center; gap:0.6rem; padding:0.75rem 1rem; font-size:0.875rem; color:var(--text-dark); transition:background 0.15s;" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">
                             <i class="fas fa-bag-shopping" style="width:16px; color:var(--primary-teal);"></i> My Orders
                         </a>
                         <div style="border-top:1px solid var(--border-light); padding:0.5rem;">
-                            <a href="/logout" id="userLogoutBtn" style="display:flex; align-items:center; gap:0.6rem; padding:0.75rem 1rem; font-size:0.875rem; color:#DC2626; border-radius:10px; transition:background 0.15s;" onmouseover="this.style.background='#FFF1F2'" onmouseout="this.style.background='none'">
+                            <a href="<?= $this->Url->build('/logout') ?>" id="userLogoutBtn" style="display:flex; align-items:center; gap:0.6rem; padding:0.75rem 1rem; font-size:0.875rem; color:#DC2626; border-radius:10px; transition:background 0.15s;" onmouseover="this.style.background='#FFF1F2'" onmouseout="this.style.background='none'">
                                 <i class="fas fa-right-from-bracket" style="width:16px;"></i> Logout
                             </a>
                         </div>
@@ -269,10 +269,10 @@
             <div>
                 <h6 class="footer-heading">Quick Links</h6>
                 <ul class="footer-links">
-                    <li><a href="/dashboard"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> Dashboard</a></li>
-                    <li><a href="/products"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> Our Products</a></li>
-                    <li><a href="/my-orders"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> My Orders</a></li>
-                    <li><a href="/profile"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> My Profile</a></li>
+                    <li><a href="<?= $this->Url->build('/dashboard') ?>"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> Dashboard</a></li>
+                    <li><a href="<?= $this->Url->build('/products') ?>"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> Our Products</a></li>
+                    <li><a href="<?= $this->Url->build('/my-orders') ?>"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> My Orders</a></li>
+                    <li><a href="<?= $this->Url->build('/profile') ?>"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> My Profile</a></li>
                 </ul>
             </div>
 
@@ -280,8 +280,8 @@
             <div>
                 <h6 class="footer-heading">Information</h6>
                 <ul class="footer-links">
-                    <li><a href="/about"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> About Us</a></li>
-                    <li><a href="/contact"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> Contact Us</a></li>
+                    <li><a href="<?= $this->Url->build('/about') ?>"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> About Us</a></li>
+                    <li><a href="<?= $this->Url->build('/contact') ?>"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> Contact Us</a></li>
                     <li><a href="#"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> Privacy Policy</a></li>
                     <li><a href="#"><i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> FAQ</a></li>
                 </ul>
@@ -340,28 +340,28 @@
 
         <nav style="padding:1rem 0.75rem; flex:1;">
             <p style="font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.4); padding:0 0.75rem; margin-bottom:0.5rem;">Admin Menu</p>
-            <a href="/admin/dashboard" class="admin-nav-item <?= ($action === 'dashboard') ? 'active' : '' ?>">
+            <a href="<?= $this->Url->build('/admin/dashboard') ?>" class="admin-nav-item <?= ($action === 'dashboard') ? 'active' : '' ?>">
                 <i class="fas fa-chart-line"></i> Dashboard
             </a>
-            <a href="/admin/orders" class="admin-nav-item <?= ($action === 'orders' || $action === 'updateStatus') ? 'active' : '' ?>">
+            <a href="<?= $this->Url->build('/admin/orders') ?>" class="admin-nav-item <?= ($action === 'orders' || $action === 'updateStatus') ? 'active' : '' ?>">
                 <i class="fas fa-clipboard-list"></i> Total Orders
             </a>
-            <a href="/admin/sales" class="admin-nav-item <?= ($controller === 'Sales') ? 'active' : '' ?>">
+            <a href="<?= $this->Url->build('/admin/sales') ?>" class="admin-nav-item <?= ($controller === 'Sales') ? 'active' : '' ?>">
                 <i class="fas fa-chart-bar"></i> Sales Management
             </a>
-            <a href="/admin/stock" class="admin-nav-item <?= ($action === 'stock' || $action === 'restock' || $action === 'toggleStatus') ? 'active' : '' ?>">
+            <a href="<?= $this->Url->build('/admin/stock') ?>" class="admin-nav-item <?= ($action === 'stock' || $action === 'restock' || $action === 'toggleStatus') ? 'active' : '' ?>">
                 <i class="fas fa-boxes-stacked"></i> Stock & Products
             </a>
             <div style="margin-top:1rem; border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem;">
                 <p style="font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.4); padding:0 0.75rem; margin-bottom:0.5rem;">Customer Site</p>
-                <a href="/dashboard" class="admin-nav-item">
+                <a href="<?= $this->Url->build('/dashboard') ?>" class="admin-nav-item">
                     <i class="fas fa-arrow-left"></i> Back to Store
                 </a>
             </div>
         </nav>
 
         <div style="padding:1rem 0.75rem; border-top:1px solid rgba(255,255,255,0.1);">
-            <a href="/logout" class="logout-btn" style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.8);" onmouseover="this.style.background='rgba(220,38,38,0.3)'; this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='rgba(255,255,255,0.8)'">
+            <a href="<?= $this->Url->build('/logout') ?>" class="logout-btn" style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.8);" onmouseover="this.style.background='rgba(220,38,38,0.3)'; this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='rgba(255,255,255,0.8)'">
                 <i class="fas fa-right-from-bracket"></i> Logout
             </a>
         </div>
@@ -449,7 +449,7 @@ function closeCart() {
 }
 
 function loadCart() {
-    fetch('/cart', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    fetch('<?= $this->Url->build('/cart') ?>', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(r => r.json())
         .catch(() => null)
         .then(data => { if (data) renderCart(data); });
@@ -481,7 +481,7 @@ function renderCart(data) {
         const sub = parseFloat(item.product?.price || 0) * item.quantity;
         total += sub; count += item.quantity;
         return `<div class="cart-item" id="cartItem-${item.id}">
-            <img src="/img/products/${item.product?.image || 'default.jpg'}" class="cart-item-img" onerror="this.src='/img/products/default.jpg'" alt="${item.product?.name}">
+            <img src="<?= $this->Url->build('/img/products/${item.product?.image || 'default.jpg'}') ?>" class="cart-item-img" onerror="this.src='/img/products/default.jpg'" alt="${item.product?.name}">
             <div style="flex:1; min-width:0;">
                 <div style="font-weight:600; font-size:0.875rem; margin-bottom:0.25rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.product?.name || 'Product'}</div>
                 <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">RM ${parseFloat(item.product?.price || 0).toFixed(2)} each</div>
@@ -529,7 +529,7 @@ function addToCart(productId, quantity) {
     formData.append('product_id', productId);
     formData.append('quantity', quantity);
 
-    fetch('/cart/add', {
+    fetch('<?= $this->Url->build('/cart/add') ?>', {
         method: 'POST',
         body: formData,
         headers: { 'X-Requested-With': 'XMLHttpRequest' }

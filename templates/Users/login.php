@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="<?= $this->request->getWebroot() ?>css/mybake.css">
+    <link rel="stylesheet" href="<?= $this->request->getAttribute('webroot') ?>css/mybake.css">
 </head>
 <body>
 
@@ -126,7 +126,7 @@
             </button>
 
             <!-- Guest -->
-            <a href="/dashboard" class="btn btn-outline btn-full" style="margin-bottom:1.5rem;">
+            <a href="<?= $this->Url->build('/dashboard') ?>" class="btn btn-outline btn-full" style="margin-bottom:1.5rem;">
                 <i class="fas fa-eye"></i> Continue as Guest
             </a>
 
@@ -135,7 +135,7 @@
             <div style="text-align:center; padding-top:1rem; border-top:1px solid var(--border-light);">
                 <p style="color:var(--text-muted); font-size:0.875rem;">
                     Don't have an account?
-                    <a href="/register" style="color:var(--primary-teal); font-weight:600; margin-left:0.25rem;">Create an Account</a>
+                    <a href="<?= $this->Url->build('/register') ?>" style="color:var(--primary-teal); font-weight:600; margin-left:0.25rem;">Create an Account</a>
                 </p>
             </div>
         </div>

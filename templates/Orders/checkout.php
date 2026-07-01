@@ -4,7 +4,7 @@
 <div class="container" style="max-width:960px;">
 
 <div style="margin-bottom:2rem;">
-    <a href="/products" style="color:var(--text-muted); font-size:0.875rem; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:0.75rem; transition:color 0.2s;">
+    <a href="<?= $this->Url->build('/products') ?>" style="color:var(--text-muted); font-size:0.875rem; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:0.75rem; transition:color 0.2s;">
         <i class="fas fa-arrow-left"></i> Continue Shopping
     </a>
     <p class="section-label">Order Confirmation</p>
@@ -27,7 +27,7 @@
             <div style="padding:1rem;">
                 <?php foreach ($cart->cart_items as $item): ?>
                 <div style="display:flex; align-items:center; gap:1rem; padding:0.875rem 0; border-bottom:1px solid var(--border-light);">
-                    <img src="/img/products/<?= h($item->product->image ?? 'default.jpg') ?>"
+                    <img src="<?= $this->Url->build('/img/products/<?= h($item->product->image ?? 'default.jpg') ?>') ?>"
                          onerror="this.src='https://placehold.co/56x56/E8F7F7/1A7A7A?text=MB'"
                          alt="<?= h($item->product->name) ?>"
                          style="width:56px; height:56px; border-radius:10px; object-fit:cover; background:var(--bg-light); flex-shrink:0;">
@@ -49,7 +49,7 @@
                 <div style="display:flex; align-items:center; gap:0.6rem; font-weight:700;">
                     <i class="fas fa-map-marker-alt" style="color:var(--primary-teal);"></i> Delivery Address
                 </div>
-                <a href="/profile/addresses/add" style="font-size:0.8rem; color:var(--primary-teal); font-weight:600;">+ Add New</a>
+                <a href="<?= $this->Url->build('/profile/addresses/add') ?>" style="font-size:0.8rem; color:var(--primary-teal); font-weight:600;">+ Add New</a>
             </div>
             <div style="padding:1.25rem 1.5rem;">
                 <?php if (!empty($addresses) && count($addresses) > 0): ?>
@@ -73,9 +73,40 @@
                 <?php else: ?>
                 <div style="text-align:center; padding:1.5rem; color:var(--text-muted);">
                     <i class="fas fa-map-marker-alt" style="font-size:2rem; opacity:0.3; margin-bottom:0.75rem; display:block;"></i>
-                    <p style="font-size:0.875rem;">No saved addresses. <a href="/profile/addresses/add" style="color:var(--primary-teal); font-weight:600;">Add one now</a>.</p>
+                    <p style="font-size:0.875rem;">No saved addresses. <a href="<?= $this->Url->build('/profile/addresses/add') ?>" style="color:var(--primary-teal); font-weight:600;">Add one now</a>.</p>
                 </div>
                 <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div style="background:#fff; border-radius:20px; border:1px solid var(--border-light); overflow:hidden; margin-bottom:1.5rem; box-shadow:var(--shadow-sm);">
+            <div style="padding:1.25rem 1.5rem; border-bottom:1px solid var(--border-light);">
+                <div style="font-weight:700; display:flex; align-items:center; gap:0.6rem;">
+                    <i class="fas fa-credit-card" style="color:var(--secondary-gold-dark);"></i> Payment Method
+                </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem;">
+                <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                    <label style="display:flex; align-items:center; gap:0.875rem; padding:1rem; border:2px solid var(--primary-teal); border-radius:12px; cursor:pointer; background:var(--primary-teal-xlight);" onclick="this.parentElement.querySelectorAll('label').forEach(l=>{l.style.borderColor='var(--border-light)'; l.style.background='var(--white)';}); this.style.borderColor='var(--primary-teal)'; this.style.background='var(--primary-teal-xlight)';">
+                        <input type="radio" name="payment_method" value="fpx" checked style="accent-color:var(--primary-teal);">
+                        <div style="flex:1;">
+                            <div style="font-weight:600; font-size:0.9rem;">FPX Online Banking</div>
+                            <div style="color:var(--text-muted); font-size:0.8rem;">Maybank2u, CIMB Clicks, RHB Now, etc.</div>
+                        </div>
+                        <i class="fas fa-building-columns" style="font-size:1.5rem; color:var(--primary-teal); opacity:0.8;"></i>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.875rem; padding:1rem; border:2px solid var(--border-light); border-radius:12px; cursor:pointer; background:var(--white);" onclick="this.parentElement.querySelectorAll('label').forEach(l=>{l.style.borderColor='var(--border-light)'; l.style.background='var(--white)';}); this.style.borderColor='var(--primary-teal)'; this.style.background='var(--primary-teal-xlight)';">
+                        <input type="radio" name="payment_method" value="card" style="accent-color:var(--primary-teal);">
+                        <div style="flex:1;">
+                            <div style="font-weight:600; font-size:0.9rem;">Credit / Debit Card</div>
+                            <div style="color:var(--text-muted); font-size:0.8rem;">Visa, Mastercard</div>
+                        </div>
+                        <div style="display:flex; gap:0.4rem; color:#1434CB; font-size:1.5rem; opacity:0.8;">
+                            <i class="fab fa-cc-visa"></i> <i class="fab fa-cc-mastercard" style="color:#EB001B;"></i>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
 
@@ -132,13 +163,13 @@
                 </div>
                 <?php endif; ?>
 
-                <button type="submit" class="btn btn-gold btn-full btn-lg" style="margin-top:1.5rem;" onclick="this.disabled=true; this.innerHTML='<i class=\'fas fa-spinner fa-spin\'></i> Placing Order...'; this.form.submit();">
-                    <i class="fas fa-credit-card"></i> Place Order
+                <button type="submit" class="btn btn-gold btn-full btn-lg" style="margin-top:1.5rem;" onclick="this.disabled=true; this.innerHTML='<i class=\'fas fa-spinner fa-spin\'></i> Processing Payment...'; this.form.submit();">
+                    <i class="fas fa-lock"></i> Confirm & Pay RM <?= number_format($total >= 80 ? $total : $total + 8, 2) ?>
                 </button>
 
                 <p style="text-align:center; color:var(--text-muted); font-size:0.75rem; margin-top:0.875rem;">
                     <i class="fas fa-shield-halved" style="color:var(--primary-teal);"></i>
-                    Secure checkout. Cash on delivery.
+                    Secure simulated checkout via ToyyibPay.
                 </p>
             </div>
         </div>

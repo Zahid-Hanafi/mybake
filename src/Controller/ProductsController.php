@@ -5,6 +5,11 @@ namespace App\Controller;
 
 class ProductsController extends AppController
 {
+    public function beforeFilter(\Cake\Event\EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions(['index', 'view']);
+    }
     public function index()
     {
         $this->setCartCount();

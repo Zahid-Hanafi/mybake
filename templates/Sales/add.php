@@ -2,7 +2,7 @@
 
 <div style="max-width:800px;">
 <div style="margin-bottom:1.5rem;">
-    <a href="/admin/sales" style="color:var(--text-muted); font-size:0.875rem; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:0.75rem;">
+    <a href="<?= $this->Url->build('/admin/sales') ?>" style="color:var(--text-muted); font-size:0.875rem; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:0.75rem;">
         <i class="fas fa-arrow-left"></i> Back to Sales
     </a>
     <h1 style="font-size:1.25rem; font-weight:700;">Record Offline Sale</h1>
@@ -71,7 +71,7 @@
     </div>
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-        <a href="/admin/sales" class="btn btn-outline"><i class="fas fa-times"></i> Cancel</a>
+        <a href="<?= $this->Url->build('/admin/sales') ?>" class="btn btn-outline"><i class="fas fa-times"></i> Cancel</a>
         <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> Record Sale</button>
     </div>
 

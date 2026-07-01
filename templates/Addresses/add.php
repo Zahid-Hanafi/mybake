@@ -2,7 +2,7 @@
 <div style="padding:2rem 0 4rem;">
 <div class="container" style="max-width:600px;">
     <div style="margin-bottom:2rem;">
-        <a href="/profile/addresses" style="color:var(--text-muted); font-size:0.875rem; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:0.75rem; transition:color 0.2s;" onmouseover="this.style.color='var(--primary-teal)'" onmouseout="this.style.color='var(--text-muted)'">
+        <a href="<?= $this->Url->build('/profile/addresses') ?>" style="color:var(--text-muted); font-size:0.875rem; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:0.75rem; transition:color 0.2s;" onmouseover="this.style.color='var(--primary-teal)'" onmouseout="this.style.color='var(--text-muted)'">
             <i class="fas fa-arrow-left"></i> Back to Addresses
         </a>
         <p class="section-label">Delivery Location</p>
@@ -68,7 +68,7 @@
         </div>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.875rem;">
-            <a href="/profile/addresses" class="btn btn-outline"><i class="fas fa-times"></i> Cancel</a>
+            <a href="<?= $this->Url->build('/profile/addresses') ?>" class="btn btn-outline"><i class="fas fa-times"></i> Cancel</a>
             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Address</button>
         </div>
         <?= $this->Form->end() ?>

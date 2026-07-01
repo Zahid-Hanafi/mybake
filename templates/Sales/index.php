@@ -27,8 +27,8 @@
 
 <!-- Action Buttons -->
 <div style="display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;">
-    <a href="/admin/sales/add" class="btn btn-primary"><i class="fas fa-plus"></i> Add Offline Sale</a>
-    <a href="/admin/sales/report" class="btn btn-gold"><i class="fas fa-file-pdf"></i> Generate Report</a>
+    <a href="<?= $this->Url->build('/admin/sales/add') ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Add Offline Sale</a>
+    <a href="<?= $this->Url->build('/admin/sales/report') ?>" class="btn btn-gold"><i class="fas fa-file-pdf"></i> Generate Report</a>
 </div>
 
 <!-- Sales Table -->
@@ -42,7 +42,7 @@
     <?php if (empty($sales) || count($sales) === 0): ?>
     <div style="text-align:center; padding:3rem 2rem; color:var(--text-muted);">
         <i class="fas fa-inbox" style="font-size:3rem; opacity:0.25; display:block; margin-bottom:1rem;"></i>
-        <p>No offline sales records yet. <a href="/admin/sales/add" style="color:var(--primary-teal); font-weight:600;">Add one now</a>.</p>
+        <p>No offline sales records yet. <a href="<?= $this->Url->build('/admin/sales/add') ?>" style="color:var(--primary-teal); font-weight:600;">Add one now</a>.</p>
     </div>
     <?php else: ?>
     <div class="table-wrapper" style="border:none; border-radius:0;">

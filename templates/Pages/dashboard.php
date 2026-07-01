@@ -30,13 +30,13 @@ $this->assign('title', 'Dashboard');
                             <p style="color:rgba(255,255,255,0.75); font-size:0.875rem; margin-bottom:1rem; line-height:1.6;"><?= h(substr($product->description ?? 'Authentic homemade goodness crafted fresh daily.', 0, 100)) ?>...</p>
                             <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
                                 <span style="font-family:'Playfair Display',serif; font-size:1.75rem; font-weight:700; color:var(--secondary-gold-light);">RM <?= number_format($product->price, 2) ?></span>
-                                <a href="/products" class="btn" style="background:var(--secondary-gold); color:#fff; border:none;">
+                                <a href="<?= $this->Url->build('/products') ?>" class="btn" style="background:var(--secondary-gold); color:#fff; border:none;">
                                     <i class="fas fa-bag-shopping"></i> Order Now
                                 </a>
                             </div>
                         </div>
                         <div style="flex-shrink:0; width:180px; height:180px; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.25);">
-                            <img src="/img/products/<?= h($product->image ?? 'default.jpg') ?>"
+                            <img src="<?= $this->Url->build('/img/products/<?= h($product->image ?? 'default.jpg') ?>') ?>"
                                  onerror="this.src='https://placehold.co/180x180/1A7A7A/E8C97A?text=MyBake'"
                                  alt="<?= h($product->name) ?>"
                                  style="width:100%; height:100%; object-fit:cover;">
@@ -56,7 +56,7 @@ $this->assign('title', 'Dashboard');
                 <p style="color:rgba(255,255,255,0.6); font-size:0.875rem; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:0.1em;">Welcome to</p>
                 <h2 style="font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:800; color:#fff; margin-bottom:1rem;">MyBake</h2>
                 <p style="color:rgba(255,255,255,0.7); margin-bottom:1.5rem;">Authentic homemade taste since 1990.</p>
-                <a href="/products" class="btn btn-gold btn-lg">Explore Our Products</a>
+                <a href="<?= $this->Url->build('/products') ?>" class="btn btn-gold btn-lg">Explore Our Products</a>
             </div>
         </div>
         <?php endif; ?>
@@ -72,14 +72,14 @@ $this->assign('title', 'Dashboard');
                 <p class="section-label">🆕 Just Arrived</p>
                 <h2 class="section-title">New Arrivals</h2>
             </div>
-            <a href="/products?line=1" class="btn btn-outline btn-sm">View All <i class="fas fa-arrow-right"></i></a>
+            <a href="<?= $this->Url->build('/products?line=1') ?>" class="btn btn-outline btn-sm">View All <i class="fas fa-arrow-right"></i></a>
         </div>
 
         <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:1.25rem;">
             <?php foreach ($newArrivals as $product): ?>
             <div class="product-card" style="animation: fadeUp 0.5s ease both;">
                 <div class="product-card-img">
-                    <img src="/img/products/<?= h($product->image ?? 'default.jpg') ?>"
+                    <img src="<?= $this->Url->build('/img/products/<?= h($product->image ?? 'default.jpg') ?>') ?>"
                          onerror="this.src='https://placehold.co/280x280/E8F7F7/1A7A7A?text=MyBake'"
                          alt="<?= h($product->name) ?>">
                     <span class="product-badge new">New</span>
@@ -114,21 +114,21 @@ $this->assign('title', 'Dashboard');
             <h2 class="section-title">Quick Access</h2>
         </div>
         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1.25rem; max-width:700px; margin:0 auto;">
-            <a href="/products" class="quick-action">
+            <a href="<?= $this->Url->build('/products') ?>" class="quick-action">
                 <div class="quick-action-icon qa-teal"><i class="fas fa-cookie-bite"></i></div>
                 <div>
                     <div style="font-weight:600; font-size:0.9rem;">Our Products</div>
                     <div style="font-size:0.75rem; color:var(--text-muted);">Browse all items</div>
                 </div>
             </a>
-            <a href="/contact" class="quick-action">
+            <a href="<?= $this->Url->build('/contact') ?>" class="quick-action">
                 <div class="quick-action-icon qa-gold"><i class="fas fa-envelope"></i></div>
                 <div>
                     <div style="font-weight:600; font-size:0.9rem;">Contact Us</div>
                     <div style="font-size:0.75rem; color:var(--text-muted);">Get in touch</div>
                 </div>
             </a>
-            <a href="/about" class="quick-action">
+            <a href="<?= $this->Url->build('/about') ?>" class="quick-action">
                 <div class="quick-action-icon qa-teal"><i class="fas fa-circle-info"></i></div>
                 <div>
                     <div style="font-weight:600; font-size:0.9rem;">About MyBake</div>

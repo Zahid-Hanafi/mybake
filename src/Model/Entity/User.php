@@ -8,7 +8,7 @@ use Cake\ORM\Entity;
 
 class User extends Entity
 {
-    protected array $_accessible = [
+    protected $_accessible = [
         'first_name'  => true,
         'last_name'   => true,
         'email'       => true,
@@ -20,7 +20,7 @@ class User extends Entity
         'modified'    => true,
     ];
 
-    protected array $_hidden = ['password'];
+    protected $_hidden = ['password'];
 
     // Auto-hash password on set
     protected function _setPassword(string $password): string

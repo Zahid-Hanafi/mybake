@@ -75,6 +75,7 @@ class OrdersController extends AppController
                         'product_id'   => $ci->product_id,
                         'product_name' => $ci->product->name,
                         'unit_price'   => $ci->product->price,
+                        'cost_price'   => $ci->product->cost_price ?? ($ci->product->price * 0.5),
                         'quantity'     => $ci->quantity,
                         'subtotal'     => $ci->product->price * $ci->quantity,
                     ]));

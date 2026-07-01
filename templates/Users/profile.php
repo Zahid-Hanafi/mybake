@@ -24,10 +24,10 @@
         </span>
 
         <div style="border-top:1px solid var(--border-light); margin-top:1.5rem; padding-top:1.25rem; display:flex; flex-direction:column; gap:0.5rem;">
-            <a href="/profile" class="nav-item active"><i class="fas fa-user-circle"></i> My Profile</a>
-            <a href="/profile/addresses" class="nav-item"><i class="fas fa-map-marker-alt"></i> My Addresses</a>
-            <a href="/my-orders" class="nav-item"><i class="fas fa-bag-shopping"></i> My Orders</a>
-            <a href="/logout" class="logout-btn" onclick="confirmLogout(event, '/logout')"><i class="fas fa-right-from-bracket"></i> Logout</a>
+            <a href="<?= $this->Url->build('/profile') ?>" class="nav-item active"><i class="fas fa-user-circle"></i> My Profile</a>
+            <a href="<?= $this->Url->build('/profile/addresses') ?>" class="nav-item"><i class="fas fa-map-marker-alt"></i> My Addresses</a>
+            <a href="<?= $this->Url->build('/my-orders') ?>" class="nav-item"><i class="fas fa-bag-shopping"></i> My Orders</a>
+            <a href="<?= $this->Url->build('/logout') ?>" class="logout-btn" onclick="confirmLogout(event, '/logout')"><i class="fas fa-right-from-bracket"></i> Logout</a>
         </div>
     </div>
 

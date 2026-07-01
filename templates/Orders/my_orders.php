@@ -7,7 +7,7 @@
         <p class="section-label">Order History</p>
         <h1 class="section-title">My Orders</h1>
     </div>
-    <a href="/products" class="btn btn-primary"><i class="fas fa-bag-shopping"></i> Continue Shopping</a>
+    <a href="<?= $this->Url->build('/products') ?>" class="btn btn-primary"><i class="fas fa-bag-shopping"></i> Continue Shopping</a>
 </div>
 
 <?= $this->Flash->render() ?>
@@ -17,7 +17,7 @@
     <i class="fas fa-box-open" style="font-size:4rem; color:var(--text-muted); opacity:0.2; display:block; margin-bottom:1rem;"></i>
     <h3 style="font-family:'Playfair Display',serif; margin-bottom:0.5rem;">No orders yet</h3>
     <p style="color:var(--text-muted); margin-bottom:1.5rem;">You haven't placed any orders. Start shopping now!</p>
-    <a href="/products" class="btn btn-primary btn-lg"><i class="fas fa-cookie-bite"></i> Browse Products</a>
+    <a href="<?= $this->Url->build('/products') ?>" class="btn btn-primary btn-lg"><i class="fas fa-cookie-bite"></i> Browse Products</a>
 </div>
 <?php else: ?>
 
@@ -90,10 +90,10 @@ foreach ($myOrders as $o) { $counts[$o->status] = ($counts[$o->status] ?? 0) + 1
 
             <!-- Actions -->
             <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
-                <a href="/my-orders/view/<?= $order->id ?>" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i> View Details</a>
+                <a href="<?= $this->Url->build('/my-orders/view/<?= $order->id ?>') ?>" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i> View Details</a>
                 <?php if ($order->status === 'pending'): ?>
-                <a href="/my-orders/edit/<?= $order->id ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil"></i> Edit Order</a>
-                <form method="post" action="/my-orders/cancel/<?= $order->id ?>" style="margin:0;" onsubmit="return confirm('Cancel this order? Stock will be restored.')">
+                <a href="<?= $this->Url->build('/my-orders/edit/<?= $order->id ?>') ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil"></i> Edit Order</a>
+                <form method="post" action="<?= $this->Url->build('/my-orders/cancel/<?= $order->id ?>') ?>" style="margin:0;" onsubmit="return confirm('Cancel this order? Stock will be restored.')">
                     <?= $this->Form->hidden('_csrfToken', ['id' => false]) ?>
                     <button type="submit" class="btn btn-sm" style="background:#FFF1F2; color:#DC2626; border:none;"><i class="fas fa-times"></i> Cancel</button>
                 </form>

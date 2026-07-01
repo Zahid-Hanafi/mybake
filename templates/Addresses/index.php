@@ -8,7 +8,7 @@
         <p class="section-label">Delivery Locations</p>
         <h1 class="section-title">My Addresses</h1>
     </div>
-    <a href="/profile/addresses/add" class="btn btn-primary">
+    <a href="<?= $this->Url->build('/profile/addresses/add') ?>" class="btn btn-primary">
         <i class="fas fa-plus"></i> Add New Address
     </a>
 </div>
@@ -20,7 +20,7 @@
     <i class="fas fa-map-marker-alt" style="font-size:3.5rem; color:var(--text-muted); opacity:0.25; display:block; margin-bottom:1rem;"></i>
     <h3 style="font-family:'Playfair Display',serif; margin-bottom:0.5rem;">No addresses yet</h3>
     <p style="color:var(--text-muted); margin-bottom:1.5rem;">Add a delivery address to make checkout faster!</p>
-    <a href="/profile/addresses/add" class="btn btn-primary"><i class="fas fa-plus"></i> Add Address</a>
+    <a href="<?= $this->Url->build('/profile/addresses/add') ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Add Address</a>
 </div>
 
 <?php else: ?>
@@ -51,18 +51,18 @@
 
         <div style="display:flex; align-items:center; gap:0.5rem; margin-top:1rem; padding-top:0.875rem; border-top:1px solid var(--border-light);">
             <?php if (!$address->is_default): ?>
-            <form method="post" action="/profile/addresses/default/<?= $address->id ?>" style="margin:0;">
+            <form method="post" action="<?= $this->Url->build('/profile/addresses/default/<?= $address->id ?>') ?>" style="margin:0;">
                 <?= $this->Form->hidden('_csrfToken', ['id' => false]) ?>
                 <button type="submit" class="btn btn-outline btn-sm">
                     <i class="fas fa-check-circle"></i> Set as Default
                 </button>
             </form>
             <?php endif; ?>
-            <a href="/profile/addresses/edit/<?= $address->id ?>" class="btn btn-outline btn-sm">
+            <a href="<?= $this->Url->build('/profile/addresses/edit/<?= $address->id ?>') ?>" class="btn btn-outline btn-sm">
                 <i class="fas fa-pencil"></i> Edit
             </a>
             <?php if (!$address->is_default): ?>
-            <form method="post" action="/profile/addresses/delete/<?= $address->id ?>" style="margin:0;" onsubmit="return confirm('Remove this address?')">
+            <form method="post" action="<?= $this->Url->build('/profile/addresses/delete/<?= $address->id ?>') ?>" style="margin:0;" onsubmit="return confirm('Remove this address?')">
                 <?= $this->Form->hidden('_csrfToken', ['id' => false]) ?>
                 <button type="submit" class="btn btn-sm" style="background:#FFF1F2; color:#DC2626; border:none;">
                     <i class="fas fa-trash-alt"></i> Delete
@@ -76,7 +76,7 @@
 <?php endif; ?>
 
 <div style="margin-top:1.5rem; text-align:center;">
-    <a href="/profile" style="color:var(--text-muted); font-size:0.875rem;">← Back to Profile</a>
+    <a href="<?= $this->Url->build('/profile') ?>" style="color:var(--text-muted); font-size:0.875rem;">← Back to Profile</a>
 </div>
 
 </div>
