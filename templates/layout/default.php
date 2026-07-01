@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="MyBake — Authentic homemade Bahulu, Rempeyek, and Kerepek Ubi from Sekinchan, Selangor. Order fresh traditional snacks online.">
     <title>MyBake <?= !empty($this->fetch('title')) ? '— ' . $this->fetch('title') : '' ?></title>
-    <?= $this->Html->meta('icon') ?>
+    <link rel="icon" type="image/svg+xml" href="<?= $this->request->getAttribute('webroot') ?>favicon.svg">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
     <!-- MyBake CSS -->
-    <link rel="stylesheet" href="<?= $this->request->getAttribute('webroot') ?>css/mybake.css">
+    <link rel="stylesheet" href="<?= $this->request->getAttribute('webroot') ?>css/mybake.css?v=<?= time() ?>">
 
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -162,7 +162,7 @@
     <div class="cart-panel-footer" id="cartFooter" style="display:none;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
             <span style="font-weight:600; color:var(--text-muted);">Total</span>
-            <span style="font-size:1.25rem; font-weight:700; color:var(--primary-teal);" id="cartTotal">RM 0.00</span>
+            <span style="font-size:1.25rem; font-weight:700; color:var(--primary-emerald);" id="cartTotal">RM 0.00</span>
         </div>
         <a href="<?= $this->Url->build('/checkout') ?>" class="btn btn-gold btn-full btn-lg">
             <i class="fas fa-credit-card"></i> Proceed to Checkout
@@ -172,38 +172,36 @@
 
 <!-- ── HEADER ───────────────────────────────────── -->
 <header class="site-header" id="siteHeader">
-    <div class="container">
-        <div class="header-inner">
+    <div class="header-container-custom">
+        <div class="header-inner" style="justify-content: space-between;">
             <!-- Left: Burger + Brand -->
-            <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="display:flex; align-items:center; gap:0.75rem; flex:1;">
                 <button class="burger-btn" id="burgerBtn" onclick="toggleSidebar()" aria-label="Toggle navigation">
                     <div class="burger-icon">
                         <span></span><span></span><span></span>
                     </div>
                 </button>
-                <a href="<?= $this->Url->build('/dashboard') ?>" class="brand-logo">
-                    <div class="brand-icon"><span>MB</span></div>
+                <a href="<?= $this->Url->build('/dashboard') ?>" class="brand-logo" style="text-decoration:none; display:flex; align-items:center; gap:0.6rem;">
+                    <div class="brand-icon" style="width:36px; height:36px; border-radius:10px; background:var(--primary-emerald); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem; font-family:'Playfair Display',serif;"><span>MB</span></div>
                     <div>
-                        <div class="brand-name">MyBake</div>
-                        <div class="brand-tagline">Authentic · Homemade · Fresh</div>
+                        <div class="brand-name" style="font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700; color:var(--text-dark); line-height:1.2;">MyBake</div>
+                        <div class="brand-tagline" style="font-size:0.65rem; color:var(--text-muted); letter-spacing:0.02em;">Authentic · Homemade · Fresh</div>
                     </div>
                 </a>
             </div>
 
-            <!-- Center: Clock -->
-            <div class="clock-display" id="clockDisplay">
-                <i class="fas fa-clock" style="color:var(--primary-teal);"></i>
-                <span id="clockText"></span>
-            </div>
+            <!-- Right: Clock + Cart + User -->
+            <div style="display:flex; align-items:center; gap:1.25rem;">
+                <div class="clock-display" id="clockDisplay" style="align-items:center; gap:0.4rem; font-size:0.85rem; color:var(--text-muted); background:var(--bg-light); padding:0.4rem 0.875rem; border-radius:20px;">
+                    <i class="fas fa-clock" style="color:var(--primary-emerald);"></i>
+                    <span id="clockText" style="font-weight:500;"></span>
+                </div>
 
-            <!-- Right: Cart + User -->
-            <div style="display:flex; align-items:center; gap:0.5rem;">
-                <?php if ($identity): ?>
+                <div style="display:flex; align-items:center; gap:0.5rem;">
                 <button class="cart-btn" onclick="openCart()" aria-label="Shopping cart" id="cartBtn">
                     <i class="fas fa-bag-shopping"></i>
                     <span class="cart-badge <?= $cartCount === 0 ? 'hidden' : '' ?>" id="cartBadge"><?= $cartCount ?></span>
                 </button>
-                <?php endif; ?>
 
                 <div style="position:relative;" id="userMenuWrapper">
                     <button onclick="toggleUserMenu()" style="display:flex; align-items:center; gap:0.6rem; background:none; border:none; cursor:pointer; padding:0.4rem 0.75rem; border-radius:12px; transition:background 0.2s;" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">
@@ -221,10 +219,10 @@
                             <div style="font-size:0.75rem; color:var(--text-muted);"><?= h($identity ? $identity->get('email') : '') ?></div>
                         </div>
                         <a href="<?= $this->Url->build('/profile') ?>" style="display:flex; align-items:center; gap:0.6rem; padding:0.75rem 1rem; font-size:0.875rem; color:var(--text-dark); transition:background 0.15s;" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">
-                            <i class="fas fa-user" style="width:16px; color:var(--primary-teal);"></i> My Profile
+                            <i class="fas fa-user" style="width:16px; color:var(--primary-emerald);"></i> My Profile
                         </a>
                         <a href="<?= $this->Url->build('/my-orders') ?>" style="display:flex; align-items:center; gap:0.6rem; padding:0.75rem 1rem; font-size:0.875rem; color:var(--text-dark); transition:background 0.15s;" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">
-                            <i class="fas fa-bag-shopping" style="width:16px; color:var(--primary-teal);"></i> My Orders
+                            <i class="fas fa-bag-shopping" style="width:16px; color:var(--primary-emerald);"></i> My Orders
                         </a>
                         <div style="border-top:1px solid var(--border-light); padding:0.5rem;">
                             <a href="<?= $this->Url->build('/logout') ?>" id="userLogoutBtn" style="display:flex; align-items:center; gap:0.6rem; padding:0.75rem 1rem; font-size:0.875rem; color:#DC2626; border-radius:10px; transition:background 0.15s;" onmouseover="this.style.background='#FFF1F2'" onmouseout="this.style.background='none'">
@@ -314,17 +312,24 @@
      ADMIN LAYOUT
      ══════════════════════════════════════════════════════════ -->
 <div class="admin-layout">
+    <!-- Admin Sidebar Overlay -->
+    <div class="admin-sidebar-overlay" id="adminSidebarOverlay" onclick="toggleAdminSidebar()"></div>
     <!-- Admin Sidebar -->
     <aside class="admin-sidebar" id="adminSidebar">
         <div style="padding:1.5rem; border-bottom:1px solid rgba(255,255,255,0.1);">
-            <div style="display:flex; align-items:center; gap:0.75rem;">
-                <div class="brand-icon" style="background:var(--secondary-gold); width:40px; height:40px;">
-                    <span style="color:#fff; font-size:0.8rem;">MB</span>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                    <div class="brand-icon" style="background:var(--secondary-gold); width:40px; height:40px;">
+                        <span style="color:#fff; font-size:0.8rem;">MB</span>
+                    </div>
+                    <div>
+                        <div style="font-family:'Playfair Display',serif; font-weight:700; color:#fff; font-size:1.1rem;">MyBake</div>
+                        <div style="font-size:0.65rem; color:rgba(255,255,255,0.5);">Admin Panel</div>
+                    </div>
                 </div>
-                <div>
-                    <div style="font-family:'Playfair Display',serif; font-weight:700; color:#fff; font-size:1.1rem;">MyBake</div>
-                    <div style="font-size:0.65rem; color:rgba(255,255,255,0.5);">Admin Panel</div>
-                </div>
+                <button class="admin-sidebar-close" onclick="toggleAdminSidebar()" aria-label="Close sidebar">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
         </div>
 
@@ -372,18 +377,20 @@
         <!-- Admin Top Bar -->
         <div style="background:#fff; border-bottom:1px solid var(--border-light); padding:0 1.5rem; height:64px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50;">
             <div style="display:flex; align-items:center; gap:1rem;">
-                <button onclick="document.getElementById('adminSidebar').classList.toggle('open')" style="background:none; border:none; cursor:pointer; padding:0.4rem; border-radius:8px; display:none;" class="admin-menu-toggle">
-                    <i class="fas fa-bars" style="font-size:1.1rem; color:var(--text-dark);"></i>
+                <button onclick="toggleAdminSidebar()" class="admin-burger-btn" aria-label="Toggle sidebar">
+                    <i class="fas fa-bars"></i>
                 </button>
                 <h1 style="font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700;"><?= $this->fetch('title') ?: 'Admin Panel' ?></h1>
             </div>
             <div style="display:flex; align-items:center; gap:1rem;">
-                <div class="clock-display"><i class="fas fa-clock" style="color:var(--primary-teal);"></i><span id="clockText"></span></div>
+                <div class="clock-display"><i class="fas fa-clock" style="color:var(--primary-emerald);"></i><span id="clockText"></span></div>
                 <span style="font-size:0.85rem; color:var(--text-muted);">Welcome, <?= h($firstName) ?></span>
             </div>
         </div>
 
         <div style="padding:1.5rem;">
+            <!-- Admin Flash -->
+            <div id="adminFlashContainer" style="position:fixed; top:80px; right:1rem; z-index:1000; width:320px;"></div>
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
         </div>
@@ -417,6 +424,16 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
+// ── Admin Sidebar Toggle ─────────────────────────────
+function toggleAdminSidebar() {
+    const sb = document.getElementById('adminSidebar');
+    const ov = document.getElementById('adminSidebarOverlay');
+    if (!sb) return;
+    sb.classList.toggle('open');
+    if (ov) ov.classList.toggle('open');
+}
+
+// ── showFlash (works for both customer & admin) ──────
 // ── Sidebar ──────────────────────────────────────────
 function toggleSidebar() {
     const sb  = document.getElementById('mainSidebar');
@@ -481,7 +498,7 @@ function renderCart(data) {
         const sub = parseFloat(item.product?.price || 0) * item.quantity;
         total += sub; count += item.quantity;
         return `<div class="cart-item" id="cartItem-${item.id}">
-            <img src="<?= $this->Url->build('/img/products/${item.product?.image || 'default.jpg'}') ?>" class="cart-item-img" onerror="this.src='/img/products/default.jpg'" alt="${item.product?.name}">
+            <img src="<?= $this->Url->build('/img/products/') ?>${item.product?.image || 'default.jpg'}" class="cart-item-img" onerror="this.src='<?= $this->Url->build('/img/products/default.jpg') ?>'" alt="${item.product?.name}">
             <div style="flex:1; min-width:0;">
                 <div style="font-weight:600; font-size:0.875rem; margin-bottom:0.25rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.product?.name || 'Product'}</div>
                 <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">RM ${parseFloat(item.product?.price || 0).toFixed(2)} each</div>
@@ -492,7 +509,7 @@ function renderCart(data) {
                 </div>
             </div>
             <div style="text-align:right; flex-shrink:0;">
-                <div style="font-weight:700; color:var(--primary-teal); font-size:0.875rem;">RM ${sub.toFixed(2)}</div>
+                <div style="font-weight:700; color:var(--primary-emerald); font-size:0.875rem;">RM ${sub.toFixed(2)}</div>
                 <button onclick="removeCartItem(${item.id})" style="background:none; border:none; color:#DC2626; cursor:pointer; font-size:0.75rem; margin-top:0.5rem; padding:0.2rem;">
                     <i class="fas fa-trash-alt"></i>
                 </button>
@@ -536,6 +553,10 @@ function addToCart(productId, quantity) {
     })
     .then(r => r.json())
     .then(data => {
+        if (data.error === 'unauthenticated') {
+            window.location.href = data.redirect;
+            return;
+        }
         if (data.success) {
             updateCartBadge(data.cartCount);
             showFlash('success', 'Item added to cart! 🛒');
@@ -558,7 +579,7 @@ function updateCartBadge(count) {
 
 // ── Flash Toast ──────────────────────────────────────
 function showFlash(type, msg) {
-    const c = document.getElementById('flashContainer');
+    const c = document.getElementById('flashContainer') || document.getElementById('adminFlashContainer');
     if (!c) return;
     const el = document.createElement('div');
     el.className = `flash-message flash-${type}`;
@@ -596,7 +617,7 @@ function confirmLogout(e, url) {
         text: 'You will be redirected to the login page.',
         icon: 'question',
         showCancelButton: true,
-        confirmButtonColor: 'var(--primary-teal)',
+        confirmButtonColor: 'var(--primary-emerald)',
         cancelButtonColor: '#9CA3AF',
         confirmButtonText: 'Yes, logout',
         cancelButtonText: 'Cancel',
@@ -606,7 +627,7 @@ function confirmLogout(e, url) {
     });
 }
 document.querySelectorAll('#logoutBtn, #userLogoutBtn').forEach(btn => {
-    btn.addEventListener('click', function(e) { confirmLogout(e, '/logout'); });
+    btn.addEventListener('click', function(e) { confirmLogout(e, '<?= $this->Url->build('/logout') ?>'); });
 });
 </script>
 

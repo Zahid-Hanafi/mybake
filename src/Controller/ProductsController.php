@@ -20,7 +20,7 @@ class ProductsController extends AppController
 
         // All product lines ordered
         $lines = $ProductLines->find()
-            ->orderBy(['sort_order' => 'ASC'])
+            ->order(['sort_order' => 'ASC'])
             ->all();
 
         // Search & filter
@@ -39,27 +39,16 @@ class ProductsController extends AppController
         $allProducts = $Products->find()
             ->where($conditions)
             ->contain(['ProductLines'])
-            ->orderBy(['ProductLines.sort_order' => 'ASC', 'Products.name' => 'ASC'])
+            ->order(['ProductLines.sort_order' => 'ASC', 'Products.name' => 'ASC'])
             ->all();
 
         // New arrivals (separate section at top)
         $newArrivals = $Products->find()
-            ->where(['is_new_arrival' => 1, 'status' => 'open'])
+            ->where(['is_new_arrival' => 1])
             ->contain(['ProductLines'])
             ->limit(4)
             ->all();
 
-        // My orders (customer's past orders)
-        $myOrders = [];
-        if ($identity) {
-            $Orders = $this->fetchTable('Orders');
-            $myOrders = $Orders->find()
-                ->where(['user_id' => $identity->get('id')])
-                ->contain(['OrderItems'])
-                ->orderBy(['Orders.created_at' => 'DESC'])
-                ->all();
-        }
-
-        $this->set(compact('lines', 'allProducts', 'newArrivals', 'myOrders', 'search', 'lineFilter'));
+        $this->set(compact('lines', 'allProducts', 'newArrivals', 'search', 'lineFilter'));
     }
 }

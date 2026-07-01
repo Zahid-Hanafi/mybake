@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Create your MyBake account and start ordering authentic homemade snacks.">
     <title>MyBake — Create Account</title>
-    <?= $this->Html->meta('icon') ?>
+    <link rel="icon" type="image/svg+xml" href="<?= $this->request->getAttribute('webroot') ?>favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="<?= $this->request->getAttribute('webroot') ?>css/mybake.css">
+    <link rel="stylesheet" href="<?= $this->request->getAttribute('webroot') ?>css/mybake.css?v=<?= time() ?>">
 </head>
 <body>
 
@@ -49,6 +49,11 @@
     <!-- Form Side -->
     <div class="auth-form-side" style="overflow-y:auto;">
         <div class="auth-form-box" style="padding: 2rem 0;">
+            <!-- Mobile Logo -->
+            <div class="brand-icon mobile-logo" style="width:56px; height:56px; border-radius:12px; margin-bottom:1.5rem; display:none; background:var(--primary-emerald); color:#fff; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; font-family:'Playfair Display',serif;">
+                <span>MB</span>
+            </div>
+
             <div style="margin-bottom:1.75rem;">
                 <h2 style="font-family:'Playfair Display',serif; font-size:1.875rem; font-weight:700; color:var(--text-dark);">Create Account</h2>
                 <p style="color:var(--text-muted); margin-top:0.4rem; font-size:0.875rem;">Fill in your details to get started.</p>
@@ -192,7 +197,7 @@
             <div style="text-align:center; padding-top:1rem; border-top:1px solid var(--border-light);">
                 <p style="color:var(--text-muted); font-size:0.875rem;">
                     Already have an account?
-                    <a href="<?= $this->Url->build('/login') ?>" style="color:var(--primary-teal); font-weight:600; margin-left:0.25rem;">Sign In</a>
+                    <a href="<?= $this->Url->build('/login') ?>" style="color:var(--primary-emerald); font-weight:600; margin-left:0.25rem;">Sign In</a>
                 </p>
             </div>
         </div>
@@ -243,5 +248,10 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     }
 });
 </script>
+<style>
+    @media (max-width: 768px) {
+        .mobile-logo { display: flex !important; }
+    }
+</style>
 </body>
 </html>

@@ -420,5 +420,12 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
+        'ini' => [
+            'session.name' => 'MYBAKE_SESSION',
+            // Ensure cookie path works globally for the app
+            'session.cookie_path' => '/mybake', 
+            // Avoid secure flag locally unless HTTPS is guaranteed
+            'session.cookie_secure' => false,
+        ]
     ],
 ];

@@ -19,7 +19,7 @@
             <?= h($user->first_name . ' ' . $user->last_name) ?>
         </div>
         <div style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.25rem;"><?= h($user->email) ?></div>
-        <span class="status-badge" style="background:var(--primary-teal-xlight); color:var(--primary-teal);">
+        <span class="status-badge" style="background:var(--primary-emerald-xlight); color:var(--primary-emerald);">
             <i class="fas fa-circle" style="font-size:0.45rem;"></i> <?= ucfirst($user->role) ?>
         </span>
 
@@ -27,7 +27,7 @@
             <a href="<?= $this->Url->build('/profile') ?>" class="nav-item active"><i class="fas fa-user-circle"></i> My Profile</a>
             <a href="<?= $this->Url->build('/profile/addresses') ?>" class="nav-item"><i class="fas fa-map-marker-alt"></i> My Addresses</a>
             <a href="<?= $this->Url->build('/my-orders') ?>" class="nav-item"><i class="fas fa-bag-shopping"></i> My Orders</a>
-            <a href="<?= $this->Url->build('/logout') ?>" class="logout-btn" onclick="confirmLogout(event, '/logout')"><i class="fas fa-right-from-bracket"></i> Logout</a>
+            <a href="<?= $this->Url->build('/logout') ?>" class="logout-btn" onclick="confirmLogout(event, '<?= $this->Url->build('/logout') ?>')"><i class="fas fa-right-from-bracket"></i> Logout</a>
         </div>
     </div>
 
@@ -36,7 +36,7 @@
         <!-- Personal Info -->
         <div style="background:#fff; border-radius:20px; padding:2rem; border:1px solid var(--border-light); box-shadow:var(--shadow-sm); margin-bottom:1.5rem;">
             <h2 style="font-size:1.1rem; font-weight:700; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.6rem;">
-                <i class="fas fa-user" style="color:var(--primary-teal);"></i> Personal Information
+                <i class="fas fa-user" style="color:var(--primary-emerald);"></i> Personal Information
             </h2>
 
             <?= $this->Form->create($user, ['url' => ['controller' => 'Users', 'action' => 'profile'], 'id' => 'profileForm']) ?>

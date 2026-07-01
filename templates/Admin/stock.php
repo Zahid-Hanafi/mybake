@@ -35,7 +35,7 @@
                 ?>
                 <tr id="row-<?= $product->id ?>">
                     <td>
-                        <img src="<?= $this->Url->build('/img/products/<?= h($product->image ?? 'default.jpg') ?>') ?>" 
+                        <img src="<?= $this->Url->build('/img/products/' . h($product->image ?? 'default.jpg')) ?>" 
                              onerror="this.src='https://placehold.co/40x40/E8F7F7/1A7A7A?text=MB'"
                              style="width:40px; height:40px; border-radius:8px; object-fit:cover;">
                     </td>
@@ -62,7 +62,7 @@
                             </button>
                             <button onclick="toggleProductStatus(<?= $product->id ?>, this)" 
                                     class="btn btn-sm <?= $product->status === 'open' ? 'btn-danger' : '' ?>" 
-                                    style="<?= $product->status !== 'open' ? 'background:var(--primary-teal); color:#fff;' : '' ?>"
+                                    style="<?= $product->status !== 'open' ? 'background:var(--primary-emerald); color:#fff;' : '' ?>"
                                     title="<?= $product->status === 'open' ? 'Close' : 'Open' ?> product">
                                 <i class="fas fa-<?= $product->status === 'open' ? 'lock' : 'lock-open' ?>"></i>
                             </button>
@@ -96,6 +96,7 @@
 </div>
 
 <script>
+const csrfToken = <?= json_encode($this->request->getAttribute('csrfToken')) ?>;
 let _restockId = null;
 function openRestockModal(id, name) {
     _restockId = id;
@@ -108,7 +109,13 @@ function confirmRestock() {
     if (!qty || qty < 1) return;
     const form = new FormData();
     form.append('quantity', qty);
-    fetch('<?= $this->Url->build('/admin/stock/restock/') ?>' + _restockId, { method: 'POST', body: form })
+    fetch('<?= $this->Url->build('/admin/stock/restock/') ?>' + _restockId, { 
+        method: 'POST', 
+        body: form,
+        headers: {
+            'X-CSRF-Token': csrfToken
+        }
+    })
         .then(r => r.json())
         .then(d => {
             if (d.success) {
@@ -119,11 +126,20 @@ function confirmRestock() {
                 
                 // Update class based on stock
                 el.className = 'product-stock ' + (d.stock > 50 ? 'stock-high' : (d.stock > 10 ? 'stock-medium' : (d.stock > 0 ? 'stock-low' : 'stock-out')));
+            } else {
+                showFlash('error', 'Failed to update stock');
             }
+        }).catch(err => {
+            showFlash('error', 'Failed to update stock');
         });
 }
 function toggleProductStatus(id, btn) {
-    fetch('<?= $this->Url->build('/admin/stock/toggle/') ?>' + id, { method: 'POST' })
+    fetch('<?= $this->Url->build('/admin/stock/toggle/') ?>' + id, { 
+        method: 'POST',
+        headers: {
+            'X-CSRF-Token': csrfToken
+        }
+    })
         .then(r => r.json())
         .then(d => {
             if (d.success) {
@@ -135,10 +151,14 @@ function toggleProductStatus(id, btn) {
                 } else {
                     badge.className = 'status-badge status-closed'; badge.textContent = 'Closed';
                     btn.innerHTML = '<i class="fas fa-lock-open"></i>';
-                    btn.style.cssText = 'background:var(--primary-teal); color:#fff;';
+                    btn.style.cssText = 'background:var(--primary-emerald); color:#fff;';
                 }
                 showFlash('success', 'Status updated successfully.');
+            } else {
+                showFlash('error', 'Failed to update status');
             }
+        }).catch(err => {
+            showFlash('error', 'Failed to update status');
         });
 }
 document.getElementById('restockModal').addEventListener('click', function(e) {

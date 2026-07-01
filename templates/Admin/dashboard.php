@@ -2,18 +2,18 @@
 
 <!-- Stat Cards -->
 <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; margin-bottom:2rem;">
-    <div class="stat-card teal">
+    <div class="stat-card emerald">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1rem;">
             <div>
                 <p class="stat-label">Total Revenue</p>
-                <p class="stat-value" style="color:var(--primary-teal);">RM <?= number_format($totalRevenue, 2) ?></p>
+                <p class="stat-value" style="color:var(--primary-emerald);">RM <?= number_format($totalRevenue, 2) ?></p>
             </div>
-            <div class="stat-icon" style="background:var(--primary-teal-xlight); color:var(--primary-teal);">
+            <div class="stat-icon" style="background:var(--primary-emerald-xlight); color:var(--primary-emerald);">
                 <i class="fas fa-chart-line"></i>
             </div>
         </div>
         <div style="font-size:0.75rem; color:var(--text-muted);">
-            Online: <strong style="color:var(--primary-teal);">RM <?= number_format($onlineRevenue, 2) ?></strong> &nbsp;|&nbsp;
+            Online: <strong style="color:var(--primary-emerald);">RM <?= number_format($onlineRevenue, 2) ?></strong> &nbsp;|&nbsp;
             Offline: <strong style="color:var(--secondary-gold-dark);">RM <?= number_format($offlineRevenue, 2) ?></strong>
         </div>
     </div>
@@ -54,18 +54,20 @@
                 <p style="color:var(--text-muted); font-size:0.8rem;">Last 6 months — online vs offline</p>
             </div>
             <div style="display:flex; align-items:center; gap:1rem; font-size:0.75rem;">
-                <span style="display:flex; align-items:center; gap:0.4rem;"><span style="width:12px; height:12px; border-radius:3px; background:var(--primary-teal); display:inline-block;"></span> Online</span>
+                <span style="display:flex; align-items:center; gap:0.4rem;"><span style="width:12px; height:12px; border-radius:3px; background:var(--primary-emerald); display:inline-block;"></span> Online</span>
                 <span style="display:flex; align-items:center; gap:0.4rem;"><span style="width:12px; height:12px; border-radius:3px; background:var(--secondary-gold); display:inline-block;"></span> Offline</span>
             </div>
         </div>
-        <canvas id="revenueChart" height="280"></canvas>
+        <div style="position:relative; height:280px; width:100%;">
+            <canvas id="revenueChart"></canvas>
+        </div>
     </div>
 
     <!-- Quick Actions -->
     <div style="display:flex; flex-direction:column; gap:1rem;">
-        <a href="<?= $this->Url->build('/admin/orders') ?>" style="background:#fff; border-radius:16px; border:1px solid var(--border-light); padding:1.25rem; display:flex; align-items:center; gap:1rem; text-decoration:none; color:var(--text-dark); transition:var(--transition); box-shadow:var(--shadow-sm);" onmouseover="this.style.borderColor='var(--primary-teal)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.borderColor='var(--border-light)'; this.style.boxShadow='var(--shadow-sm)';">
-            <div style="width:48px; height:48px; background:var(--primary-teal-xlight); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                <i class="fas fa-clipboard-list" style="color:var(--primary-teal); font-size:1.2rem;"></i>
+        <a href="<?= $this->Url->build('/admin/orders') ?>" style="background:#fff; border-radius:16px; border:1px solid var(--border-light); padding:1.25rem; display:flex; align-items:center; gap:1rem; text-decoration:none; color:var(--text-dark); transition:var(--transition); box-shadow:var(--shadow-sm);" onmouseover="this.style.borderColor='var(--primary-emerald)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.borderColor='var(--border-light)'; this.style.boxShadow='var(--shadow-sm)';">
+            <div style="width:48px; height:48px; background:var(--primary-emerald-xlight); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <i class="fas fa-clipboard-list" style="color:var(--primary-emerald); font-size:1.2rem;"></i>
             </div>
             <div>
                 <div style="font-weight:700; font-size:0.9rem;">Manage Orders</div>
@@ -113,7 +115,7 @@
 <div style="background:#fff; border-radius:20px; border:1px solid var(--border-light); overflow:hidden; box-shadow:var(--shadow-sm);">
     <div style="padding:1.25rem 1.5rem; border-bottom:1px solid var(--border-light); display:flex; align-items:center; justify-content:space-between;">
         <div style="font-weight:700; font-size:1rem; display:flex; align-items:center; gap:0.6rem;">
-            <i class="fas fa-boxes-stacked" style="color:var(--primary-teal);"></i> Product Stock Overview
+            <i class="fas fa-boxes-stacked" style="color:var(--primary-emerald);"></i> Product Stock Overview
         </div>
         <a href="<?= $this->Url->build('/admin/stock') ?>" class="btn btn-outline btn-sm">Manage All</a>
     </div>
@@ -156,7 +158,7 @@
                             </button>
                             <button onclick="toggleProductStatus(<?= $product->id ?>, this)"
                                     class="btn btn-sm <?= $product->status === 'open' ? 'btn-danger' : '' ?>"
-                                    style="<?= $product->status !== 'open' ? 'background:var(--primary-teal); color:#fff;' : '' ?>"
+                                    style="<?= $product->status !== 'open' ? 'background:var(--primary-emerald); color:#fff;' : '' ?>"
                                     title="<?= $product->status === 'open' ? 'Close' : 'Open' ?> product">
                                 <i class="fas fa-<?= $product->status === 'open' ? 'lock' : 'lock-open' ?>"></i>
                             </button>
@@ -189,7 +191,7 @@
     </div>
 </div>
 
-<script>
+<?php $this->Html->scriptStart(['block' => true]); ?>
 // Chart.js Revenue
 const chartData = <?= json_encode($chartData) ?>;
 const ctx = document.getElementById('revenueChart');
@@ -202,8 +204,8 @@ if (ctx) {
                 {
                     label: 'Online',
                     data: chartData.map(d => d.online),
-                    backgroundColor: 'rgba(26,122,122,0.7)',
-                    borderColor: 'var(--primary-teal)',
+                    backgroundColor: 'rgba(16,185,129,0.7)',
+                    borderColor: 'var(--primary-emerald)',
                     borderWidth: 2,
                     borderRadius: 6,
                 },
@@ -277,7 +279,7 @@ function toggleProductStatus(id, btn) {
                 } else {
                     badge.className = 'status-badge status-closed'; badge.textContent = 'Closed';
                     btn.innerHTML = '<i class="fas fa-lock-open"></i>';
-                    btn.style.cssText = 'background:var(--primary-teal); color:#fff;';
+                    btn.style.cssText = 'background:var(--primary-emerald); color:#fff;';
                 }
             }
         });
@@ -285,7 +287,7 @@ function toggleProductStatus(id, btn) {
 document.getElementById('restockModal').addEventListener('click', function(e) {
     if (e.target === this) this.classList.remove('open');
 });
-</script>
+<?php $this->Html->scriptEnd(); ?>
 
 <style>
 @media(max-width:1100px){ [style*="grid-template-columns:1fr 340px"]{grid-template-columns:1fr!important;} }

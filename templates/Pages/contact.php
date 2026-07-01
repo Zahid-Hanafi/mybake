@@ -1,14 +1,14 @@
 <?php $this->assign('title', 'Contact Us'); ?>
 
 <!-- Hero -->
-<div style="background:linear-gradient(135deg,var(--primary-teal-dark),var(--primary-teal)); padding:4rem 0; text-align:center;">
+<div style="background:linear-gradient(135deg,var(--primary-emerald-dark),var(--primary-emerald)); padding:4rem 0; text-align:center;">
     <div class="container">
         <p style="color:var(--secondary-gold-light); font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.75rem;">We're Here for You</p>
         <h1 style="font-family:'Playfair Display',serif; font-size:3rem; font-weight:800; color:#fff; margin-bottom:1rem;">Contact Us</h1>
         <p style="color:rgba(255,255,255,0.75); max-width:480px; margin:0 auto;">Have questions? Want to visit us? We'd love to hear from you.</p>
     </div>
 </div>
-<div style="background:linear-gradient(135deg,var(--primary-teal-dark),var(--primary-teal)); line-height:0;">
+<div style="background:linear-gradient(135deg,var(--primary-emerald-dark),var(--primary-emerald)); line-height:0;">
     <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C360,0 1080,40 1440,0 L1440,40 Z" fill="#FAF7F2"/></svg>
 </div>
 
@@ -24,8 +24,8 @@
         <div style="display:flex; flex-direction:column; gap:1rem; margin-bottom:2rem;">
             <!-- Location -->
             <div style="background:#fff; border-radius:16px; padding:1.25rem 1.5rem; border:1px solid var(--border-light); display:flex; align-items:flex-start; gap:1rem;">
-                <div style="width:44px; height:44px; background:var(--primary-teal-xlight); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                    <i class="fas fa-map-marker-alt" style="color:var(--primary-teal); font-size:1.1rem;"></i>
+                <div style="width:44px; height:44px; background:var(--primary-emerald-xlight); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <i class="fas fa-map-marker-alt" style="color:var(--primary-emerald); font-size:1.1rem;"></i>
                 </div>
                 <div>
                     <div style="font-weight:700; margin-bottom:0.35rem; font-size:0.9rem;">Our Location</div>
@@ -50,12 +50,12 @@
 
             <!-- Phone -->
             <div style="background:#fff; border-radius:16px; padding:1.25rem 1.5rem; border:1px solid var(--border-light); display:flex; align-items:flex-start; gap:1rem;">
-                <div style="width:44px; height:44px; background:var(--primary-teal-xlight); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                    <i class="fas fa-phone" style="color:var(--primary-teal); font-size:1.1rem;"></i>
+                <div style="width:44px; height:44px; background:var(--primary-emerald-xlight); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <i class="fas fa-phone" style="color:var(--primary-emerald); font-size:1.1rem;"></i>
                 </div>
                 <div>
                     <div style="font-weight:700; margin-bottom:0.35rem; font-size:0.9rem;">Phone Number</div>
-                    <a href="tel:+60123456789" style="color:var(--primary-teal); font-size:0.875rem; font-weight:600;">+60 12-345 6789</a>
+                    <a href="tel:+60123456789" style="color:var(--primary-emerald); font-size:0.875rem; font-weight:600;">+60 12-345 6789</a>
                     <div style="color:var(--text-muted); font-size:0.8rem; margin-top:0.2rem;">WhatsApp also available</div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                 </div>
                 <div>
                     <div style="font-weight:700; margin-bottom:0.35rem; font-size:0.9rem;">Email</div>
-                    <a href="mailto:hello@mybake.com.my" style="color:var(--primary-teal); font-size:0.875rem; font-weight:600;">hello@mybake.com.my</a>
+                    <a href="mailto:hello@mybake.com.my" style="color:var(--primary-emerald); font-size:0.875rem; font-weight:600;">hello@mybake.com.my</a>
                 </div>
             </div>
         </div>
@@ -76,14 +76,14 @@
         <div style="background:#fff; border-radius:16px; padding:1.25rem 1.5rem; border:1px solid var(--border-light);">
             <div style="font-weight:700; font-size:0.9rem; margin-bottom:0.875rem;">Follow Us</div>
             <div style="display:flex; gap:0.75rem;">
-                <a href="#" style="width:40px; height:40px; border-radius:10px; background:var(--primary-teal-xlight); color:var(--primary-teal); display:flex; align-items:center; justify-content:center; text-decoration:none; transition:var(--transition);" onmouseover="this.style.background='var(--primary-teal)'; this.style.color='#fff'" onmouseout="this.style.background='var(--primary-teal-xlight)'; this.style.color='var(--primary-teal)'">
+                <a href="#" style="width:40px; height:40px; border-radius:10px; background:var(--primary-emerald-xlight); color:var(--primary-emerald); display:flex; align-items:center; justify-content:center; text-decoration:none; transition:var(--transition);" onmouseover="this.style.background='var(--primary-emerald)'; this.style.color='#fff'" onmouseout="this.style.background='var(--primary-emerald-xlight)'; this.style.color='var(--primary-emerald)'">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a href="#" style="width:40px; height:40px; border-radius:10px; background:var(--primary-teal-xlight); color:var(--primary-teal); display:flex; align-items:center; justify-content:center; text-decoration:none; transition:var(--transition);" onmouseover="this.style.background='var(--primary-teal)'; this.style.color='#fff'" onmouseout="this.style.background='var(--primary-teal-xlight)'; this.style.color='var(--primary-teal)'">
+                <a href="#" style="width:40px; height:40px; border-radius:10px; background:var(--primary-emerald-xlight); color:var(--primary-emerald); display:flex; align-items:center; justify-content:center; text-decoration:none; transition:var(--transition);" onmouseover="this.style.background='var(--primary-emerald)'; this.style.color='#fff'" onmouseout="this.style.background='var(--primary-emerald-xlight)'; this.style.color='var(--primary-emerald)'">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a href="#" style="width:40px; height:40px; border-radius:10px; background:var(--primary-teal-xlight); color:var(--primary-teal); display:flex; align-items:center; justify-content:center; text-decoration:none; transition:var(--transition);" onmouseover="this.style.background='var(--primary-teal)'; this.style.color='#fff'" onmouseout="this.style.background='var(--primary-teal-xlight)'; this.style.color='var(--primary-teal)'">
-                    <i class="fab fa-whatsapp"></i>
+                <a href="#" style="width:40px; height:40px; border-radius:10px; background:var(--primary-emerald-xlight); color:var(--primary-emerald); display:flex; align-items:center; justify-content:center; text-decoration:none; transition:var(--transition);" onmouseover="this.style.background='var(--primary-emerald)'; this.style.color='#fff'" onmouseout="this.style.background='var(--primary-emerald-xlight)'; this.style.color='var(--primary-emerald)'">
+                    <i class="fab fa-tiktok"></i>
                 </a>
             </div>
         </div>
@@ -94,7 +94,7 @@
         <h2 style="font-family:'Playfair Display',serif; font-size:1.5rem; margin-bottom:1.25rem;">Find Us Here</h2>
         <div style="border-radius:20px; overflow:hidden; box-shadow:var(--shadow-lg); border:1px solid var(--border-light);">
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.7!2d101.0!3d3.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM8KwMzYnMDAuMCJOIDEwMcKwMDAnMDAuMCJF!5e0!3m2!1sen!2smy!4v1620000000000!5m2!1sen!2smy"
+                src="https://www.google.com/maps?q=Lot14191,+Parit+7,+Kampung+Sungai+Leman,+45400+Sekinchan,+Selangor&output=embed"
                 width="100%"
                 height="420"
                 style="border:0; display:block;"
@@ -106,7 +106,7 @@
         </div>
         <div style="background:#fff; border-radius:12px; padding:1rem 1.25rem; margin-top:1rem; border:1px solid var(--border-light); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem;">
             <div style="font-size:0.875rem; color:var(--text-muted);">
-                <i class="fas fa-map-pin" style="color:var(--primary-teal); margin-right:0.4rem;"></i>
+                <i class="fas fa-map-pin" style="color:var(--primary-emerald); margin-right:0.4rem;"></i>
                 Lot14191, Parit 7, Kg. Sungai Leman, 45400 Sekinchan, Selangor
             </div>
             <a href="https://maps.google.com/?q=Sekinchan+Selangor" target="_blank" class="btn btn-primary btn-sm">

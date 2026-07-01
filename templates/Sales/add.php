@@ -58,7 +58,7 @@
         </div>
 
         <!-- Total Preview -->
-        <div style="background:linear-gradient(135deg,var(--primary-teal-dark),var(--primary-teal)); border-radius:12px; padding:1rem 1.25rem; display:flex; align-items:center; justify-content:space-between; color:#fff;">
+        <div style="background:linear-gradient(135deg,var(--primary-emerald-dark),var(--primary-emerald)); border-radius:12px; padding:1rem 1.25rem; display:flex; align-items:center; justify-content:space-between; color:#fff;">
             <span style="font-weight:600;">Total Amount</span>
             <span style="font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700;" id="grandTotal">RM 0.00</span>
         </div>

@@ -19,8 +19,8 @@
             <?php if (!empty($addresses)): ?>
                 <div style="display:flex; flex-direction:column; gap:0.75rem; margin-bottom:1rem;">
                 <?php foreach ($addresses as $addr): ?>
-                    <label style="display:flex; align-items:flex-start; gap:0.875rem; padding:0.875rem; border:2px solid <?= $addr->id === $order->address_id ? 'var(--primary-teal)' : 'var(--border-light)' ?>; border-radius:12px; cursor:pointer; background:<?= $addr->id === $order->address_id ? 'var(--primary-teal-xlight)' : 'var(--white)' ?>;" onclick="this.parentElement.querySelectorAll('label').forEach(l=>{l.style.borderColor='var(--border-light)'; l.style.background='var(--white)';}); this.style.borderColor='var(--primary-teal)'; this.style.background='var(--primary-teal-xlight)';">
-                        <input type="radio" name="address_id" value="<?= $addr->id ?>" style="margin-top:0.2rem; accent-color:var(--primary-teal);" <?= $addr->id === $order->address_id ? 'checked' : '' ?>>
+                    <label style="display:flex; align-items:flex-start; gap:0.875rem; padding:0.875rem; border:2px solid <?= $addr->id === $order->address_id ? 'var(--primary-emerald)' : 'var(--border-light)' ?>; border-radius:12px; cursor:pointer; background:<?= $addr->id === $order->address_id ? 'var(--primary-emerald-xlight)' : 'var(--white)' ?>;" onclick="this.parentElement.querySelectorAll('label').forEach(l=>{l.style.borderColor='var(--border-light)'; l.style.background='var(--white)';}); this.style.borderColor='var(--primary-emerald)'; this.style.background='var(--primary-emerald-xlight)';">
+                        <input type="radio" name="address_id" value="<?= $addr->id ?>" style="margin-top:0.2rem; accent-color:var(--primary-emerald);" <?= $addr->id === $order->address_id ? 'checked' : '' ?>>
                         <div style="flex:1;">
                             <div style="font-weight:600; font-size:0.875rem; margin-bottom:0.2rem;"><?= h($addr->label ?? 'Address') ?></div>
                             <div style="color:var(--text-muted); font-size:0.8rem; line-height:1.6;">

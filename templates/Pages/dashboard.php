@@ -23,12 +23,12 @@ $this->assign('title', 'Dashboard');
             <div class="swiper-wrapper">
                 <?php foreach ($bestSellers as $i => $product): ?>
                 <div class="swiper-slide">
-                    <div class="hero-slide" style="background:linear-gradient(135deg, <?= ['#0F5050','#1A5050','#0F6060','#1A6A4A','#254B5A','#1A4A7A'][$i % 6] ?>, var(--primary-teal));">
+                    <div class="hero-slide" style="background:linear-gradient(135deg, <?= ['#0F5050','#1A5050','#0F6060','#1A6A4A','#254B5A','#1A4A7A'][$i % 6] ?>, var(--primary-emerald));">
                         <div style="flex:1; padding-right:1.5rem;">
                             <span style="display:inline-block; background:var(--secondary-gold); color:#fff; font-size:0.7rem; font-weight:700; padding:0.2rem 0.75rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:1rem;">⭐ Best Seller</span>
                             <h2 style="font-family:'Playfair Display',serif; font-size:1.75rem; font-weight:700; color:#fff; margin-bottom:0.5rem; line-height:1.2;"><?= h($product->name) ?></h2>
                             <p style="color:rgba(255,255,255,0.75); font-size:0.875rem; margin-bottom:1rem; line-height:1.6;"><?= h(substr($product->description ?? 'Authentic homemade goodness crafted fresh daily.', 0, 100)) ?>...</p>
-                            <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                            <div style="display:flex; align-items:center; justify-content:center; gap:1rem; flex-wrap:wrap; width: 100%;">
                                 <span style="font-family:'Playfair Display',serif; font-size:1.75rem; font-weight:700; color:var(--secondary-gold-light);">RM <?= number_format($product->price, 2) ?></span>
                                 <a href="<?= $this->Url->build('/products') ?>" class="btn" style="background:var(--secondary-gold); color:#fff; border:none;">
                                     <i class="fas fa-bag-shopping"></i> Order Now
@@ -36,7 +36,7 @@ $this->assign('title', 'Dashboard');
                             </div>
                         </div>
                         <div style="flex-shrink:0; width:180px; height:180px; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.25);">
-                            <img src="<?= $this->Url->build('/img/products/<?= h($product->image ?? 'default.jpg') ?>') ?>"
+                            <img src="<?= $this->Url->build('/img/products/' . h($product->image ?? 'default.jpg')) ?>"
                                  onerror="this.src='https://placehold.co/180x180/1A7A7A/E8C97A?text=MyBake'"
                                  alt="<?= h($product->name) ?>"
                                  style="width:100%; height:100%; object-fit:cover;">
@@ -46,8 +46,8 @@ $this->assign('title', 'Dashboard');
                 <?php endforeach; ?>
             </div>
             <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev" style="color:rgba(255,255,255,0.8);"></div>
-            <div class="swiper-button-next" style="color:rgba(255,255,255,0.8);"></div>
+            <div class="swiper-button-prev" style="color:rgba(255,255,255,0.8); z-index:10;"></div>
+            <div class="swiper-button-next" style="color:rgba(255,255,255,0.8); z-index:10;"></div>
         </div>
         <?php else: ?>
         <!-- Default hero if no products yet -->
@@ -79,7 +79,7 @@ $this->assign('title', 'Dashboard');
             <?php foreach ($newArrivals as $product): ?>
             <div class="product-card" style="animation: fadeUp 0.5s ease both;">
                 <div class="product-card-img">
-                    <img src="<?= $this->Url->build('/img/products/<?= h($product->image ?? 'default.jpg') ?>') ?>"
+                    <img src="<?= $this->Url->build('/img/products/' . h($product->image ?? 'default.jpg')) ?>"
                          onerror="this.src='https://placehold.co/280x280/E8F7F7/1A7A7A?text=MyBake'"
                          alt="<?= h($product->name) ?>">
                     <span class="product-badge new">New</span>
@@ -88,7 +88,7 @@ $this->assign('title', 'Dashboard');
                     <h3 style="font-size:0.875rem; font-weight:600; margin-bottom:0.35rem; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"><?= h($product->name) ?></h3>
                     <p style="color:var(--text-muted); font-size:0.75rem; margin-bottom:0.75rem;"><?= h($product->product_line->name ?? '') ?></p>
                     <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem;">
-                        <span style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--primary-teal);">RM <?= number_format($product->price, 2) ?></span>
+                        <span style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--primary-emerald);">RM <?= number_format($product->price, 2) ?></span>
                         <?php if ($product->status === 'open'): ?>
                         <button onclick="openAddToCartModal(<?= $product->id ?>, '<?= h(addslashes($product->name)) ?>', <?= $product->price ?>, <?= $product->stock_quantity ?>)"
                                 class="btn btn-primary btn-sm">
@@ -115,7 +115,7 @@ $this->assign('title', 'Dashboard');
         </div>
         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1.25rem; max-width:700px; margin:0 auto;">
             <a href="<?= $this->Url->build('/products') ?>" class="quick-action">
-                <div class="quick-action-icon qa-teal"><i class="fas fa-cookie-bite"></i></div>
+                <div class="quick-action-icon qa-emerald"><i class="fas fa-cookie-bite"></i></div>
                 <div>
                     <div style="font-weight:600; font-size:0.9rem;">Our Products</div>
                     <div style="font-size:0.75rem; color:var(--text-muted);">Browse all items</div>
@@ -129,7 +129,7 @@ $this->assign('title', 'Dashboard');
                 </div>
             </a>
             <a href="<?= $this->Url->build('/about') ?>" class="quick-action">
-                <div class="quick-action-icon qa-teal"><i class="fas fa-circle-info"></i></div>
+                <div class="quick-action-icon qa-emerald"><i class="fas fa-circle-info"></i></div>
                 <div>
                     <div style="font-weight:600; font-size:0.9rem;">About MyBake</div>
                     <div style="font-size:0.75rem; color:var(--text-muted);">Our story</div>
@@ -147,12 +147,12 @@ $this->assign('title', 'Dashboard');
             <button onclick="closeModal('addCartModal')" style="background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:1.1rem; padding:0.25rem;"><i class="fas fa-times"></i></button>
         </div>
         <div style="display:flex; align-items:center; gap:0.75rem; padding:0.875rem; background:var(--bg-light); border-radius:12px; margin-bottom:1.25rem;">
-            <div style="width:52px; height:52px; border-radius:10px; background:var(--primary-teal-xlight); display:flex; align-items:center; justify-content:center; color:var(--primary-teal); font-size:1.25rem;">
+            <div style="width:52px; height:52px; border-radius:10px; background:var(--primary-emerald-xlight); display:flex; align-items:center; justify-content:center; color:var(--primary-emerald); font-size:1.25rem;">
                 <i class="fas fa-cookie-bite"></i>
             </div>
             <div>
                 <div style="font-weight:600; font-size:0.9rem;" id="modalProductName">Product Name</div>
-                <div style="color:var(--primary-teal); font-weight:700; font-size:1.1rem;" id="modalProductPrice">RM 0.00</div>
+                <div style="color:var(--primary-emerald); font-weight:700; font-size:1.1rem;" id="modalProductPrice">RM 0.00</div>
             </div>
         </div>
 
@@ -166,9 +166,9 @@ $this->assign('title', 'Dashboard');
             </div>
         </div>
 
-        <div style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem; background:var(--primary-teal-xlight); border-radius:10px; margin-bottom:1.25rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem; background:var(--primary-emerald-xlight); border-radius:10px; margin-bottom:1.25rem;">
             <span style="font-weight:500; color:var(--text-muted);">Total</span>
-            <span style="font-size:1.2rem; font-weight:700; color:var(--primary-teal);" id="modalTotal">RM 0.00</span>
+            <span style="font-size:1.2rem; font-weight:700; color:var(--primary-emerald);" id="modalTotal">RM 0.00</span>
         </div>
 
         <button onclick="confirmAddToCart()" class="btn btn-gold btn-full btn-lg">
@@ -177,7 +177,7 @@ $this->assign('title', 'Dashboard');
     </div>
 </div>
 
-<script>
+<?php $this->Html->scriptStart(['block' => true]); ?>
 // Swiper
 new Swiper('#heroSwiper', {
     loop: true,
@@ -232,8 +232,7 @@ function closeModal(id) { document.getElementById(id).classList.remove('open'); 
 document.getElementById('addCartModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal('addCartModal');
 });
-</script>
-
+<?php $this->Html->scriptEnd(); ?>
 <?php $this->append('css', '<style>
 @media(max-width:768px){ 
     [style*="grid-template-columns:repeat(4"] { grid-template-columns:repeat(2,1fr)!important; }

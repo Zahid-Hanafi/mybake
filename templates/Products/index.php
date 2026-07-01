@@ -79,7 +79,7 @@ foreach ($grouped as $lineId => $data):
             <h2 style="font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700;"><?= h($lineName) ?></h2>
             <p style="color:var(--text-muted); font-size:0.875rem; margin-top:0.25rem;"><?= count($lineProducts) ?> products in this category</p>
         </div>
-        <span style="background:var(--primary-teal-xlight); color:var(--primary-teal); font-size:0.75rem; font-weight:700; padding:0.3rem 0.75rem; border-radius:20px; border:1px solid rgba(26,122,122,0.2);">
+        <span style="background:var(--primary-emerald-xlight); color:var(--primary-emerald); font-size:0.75rem; font-weight:700; padding:0.3rem 0.75rem; border-radius:20px; border:1px solid rgba(16,185,129,0.2);">
             <?= count($lineProducts) ?> items
         </span>
     </div>
@@ -100,73 +100,7 @@ foreach ($grouped as $lineId => $data):
 </div>
 <?php endif; ?>
 
-<!-- ── MY ORDERS SECTION ──────────────────────────────────── -->
-<div id="my-order" style="margin-top:4rem; scroll-margin-top:80px;">
-    <div class="section-header" style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
-        <div>
-            <p class="section-label">📦 Your purchases</p>
-            <h2 class="section-title">My Orders</h2>
-        </div>
-        <a href="<?= $this->Url->build('/my-orders') ?>" class="btn btn-outline btn-sm">View All Orders</a>
-    </div>
 
-    <?php if (!empty($myOrders) && count($myOrders) > 0): ?>
-    <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Date</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $count = 1; foreach ($myOrders as $order): ?>
-                <tr>
-                    <td style="font-weight:600;">#<?= $count++ ?></td>
-                    <td><?= $order->created_at ? $order->created_at->format('d M Y') : '—' ?></td>
-                    <td>
-                        <?php foreach ($order->order_items as $oi): ?>
-                        <div style="font-size:0.8rem;"><?= h($oi->product_name) ?> × <?= $oi->quantity ?></div>
-                        <?php endforeach; ?>
-                    </td>
-                    <td style="font-weight:700; color:var(--primary-teal);">RM <?= number_format($order->total_amount, 2) ?></td>
-                    <td>
-                        <span class="status-badge status-<?= $order->status ?>">
-                            <?= ucfirst($order->status) ?>
-                        </span>
-                    </td>
-                    <td>
-                        <?php if ($order->status === 'pending'): ?>
-                        <a href="<?= $this->Url->build('/my-orders/edit/<?= $order->id ?>') ?>" class="btn btn-outline btn-sm"><i class="fas fa-pencil"></i></a>
-                        <?php else: ?>
-                        <a href="<?= $this->Url->build('/my-orders/view/<?= $order->id ?>') ?>" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i></a>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <?php else: ?>
-    <div style="text-align:center; padding:2.5rem; background:#fff; border-radius:16px; border:1px solid var(--border-light);">
-        <i class="fas fa-bag-shopping" style="font-size:2.5rem; color:var(--text-muted); opacity:0.3; margin-bottom:1rem; display:block;"></i>
-        <p style="color:var(--text-muted);">You haven't placed any orders yet.</p>
-        <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="btn btn-primary btn-sm" style="margin-top:0.875rem;">Browse Products</a>
-    </div>
-    <?php endif; ?>
-</div>
-
-</div><!-- /container -->
-</div>
-
-<!-- Anchor: Scroll to My Order -->
-<a href="#my-order" style="position:fixed; bottom:5.5rem; right:2rem; background:var(--secondary-gold); color:#fff; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-gold); z-index:90; transition:all 0.3s;" title="Go to My Orders">
-    <i class="fas fa-bag-shopping"></i>
-</a>
 
 <!-- ── ADD TO CART MODAL ──────────────────────────────────── -->
 <div class="modal-overlay" id="addCartModal">
@@ -176,10 +110,10 @@ foreach ($grouped as $lineId => $data):
             <button onclick="closeModal('addCartModal')" style="background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:1.1rem;"><i class="fas fa-times"></i></button>
         </div>
         <div style="display:flex; align-items:center; gap:0.75rem; padding:0.875rem; background:var(--bg-light); border-radius:12px; margin-bottom:1.25rem;">
-            <div style="width:52px; height:52px; border-radius:10px; background:var(--primary-teal-xlight); display:flex; align-items:center; justify-content:center; color:var(--primary-teal); font-size:1.25rem;"><i class="fas fa-cookie-bite"></i></div>
+            <div style="width:52px; height:52px; border-radius:10px; background:var(--primary-emerald-xlight); display:flex; align-items:center; justify-content:center; color:var(--primary-emerald); font-size:1.25rem;"><i class="fas fa-cookie-bite"></i></div>
             <div>
                 <div style="font-weight:600; font-size:0.9rem;" id="modalProductName">—</div>
-                <div style="color:var(--primary-teal); font-weight:700; font-size:1.1rem;" id="modalProductPrice">RM 0.00</div>
+                <div style="color:var(--primary-emerald); font-weight:700; font-size:1.1rem;" id="modalProductPrice">RM 0.00</div>
                 <div style="font-size:0.75rem; color:var(--text-muted);">Stock: <span id="modalStock">0</span> left</div>
             </div>
         </div>
@@ -191,9 +125,9 @@ foreach ($grouped as $lineId => $data):
                 <button onclick="changeQty(1)" class="cart-qty-btn" style="width:38px; height:38px;">+</button>
             </div>
         </div>
-        <div style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem; background:var(--primary-teal-xlight); border-radius:10px; margin-bottom:1.25rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem; background:var(--primary-emerald-xlight); border-radius:10px; margin-bottom:1.25rem;">
             <span style="font-weight:500; color:var(--text-muted);">Total</span>
-            <span style="font-size:1.2rem; font-weight:700; color:var(--primary-teal);" id="modalTotal">RM 0.00</span>
+            <span style="font-size:1.2rem; font-weight:700; color:var(--primary-emerald);" id="modalTotal">RM 0.00</span>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
             <button onclick="closeModal('addCartModal')" class="btn btn-outline">Cancel</button>
@@ -209,11 +143,11 @@ function renderProductCard($product, $isNewArrival = false) {
     ob_start(); ?>
     <div class="product-card">
         <div class="product-card-img">
-            <img src="<?= $this->Url->build('/img/products/<?= htmlspecialchars($product->image ?? 'default.jpg') ?>') ?>"
+            <img src="<?= \Cake\Routing\Router::url('/img/products/' . htmlspecialchars($product->image ?? 'default.jpg')) ?>"
                  onerror="this.src='https://placehold.co/280x280/E8F7F7/1A7A7A?text=MyBake'"
                  alt="<?= htmlspecialchars($product->name) ?>">
             <?php if ($product->status !== 'open'): ?>
-                <span class="product-badge closed">Unavailable</span>
+                <div class="product-overlay"><span>Unavailable</span></div>
             <?php elseif ($isNewArrival || $product->is_new_arrival): ?>
                 <span class="product-badge new">New</span>
             <?php elseif ($product->is_best_seller): ?>
@@ -224,7 +158,7 @@ function renderProductCard($product, $isNewArrival = false) {
             <h3 style="font-size:0.875rem; font-weight:600; margin-bottom:0.2rem; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="<?= htmlspecialchars($product->name) ?>"><?= htmlspecialchars($product->name) ?></h3>
             <p style="color:var(--text-muted); font-size:0.72rem; margin-bottom:0.5rem;"><?= htmlspecialchars($product->product_line->name ?? '') ?></p>
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.6rem;">
-                <span style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--primary-teal);">RM <?= number_format($product->price, 2) ?></span>
+                <span style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--primary-emerald);">RM <?= number_format($product->price, 2) ?></span>
                 <span class="product-stock stock-<?= $stockLevel ?>"><?= $stockLabel ?></span>
             </div>
             <?php if ($product->status === 'open' && $product->stock_quantity > 0): ?>

@@ -13,7 +13,7 @@ class AddressesController extends AppController
         $identity  = $this->Authentication->getIdentity();
         $addresses = $this->Addresses->find()
             ->where(['user_id' => $identity->get('id')])
-            ->orderBy(['is_default' => 'DESC', 'created_at' => 'ASC'])
+            ->order(['is_default' => 'DESC', 'created_at' => 'ASC'])
             ->all();
         $this->set(compact('addresses'));
     }

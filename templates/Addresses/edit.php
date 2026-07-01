@@ -80,9 +80,9 @@ function selectLabel(label) {
     ['Home','Work','Other'].forEach(l => {
         const el = document.getElementById('lbl-' + l);
         if (el) {
-            el.style.borderColor = l === label ? 'var(--primary-teal)' : 'var(--border-light)';
-            el.style.background  = l === label ? 'var(--primary-teal-xlight)' : '';
-            el.style.color       = l === label ? 'var(--primary-teal)' : '';
+            el.style.borderColor = l === label ? 'var(--primary-emerald)' : 'var(--border-light)';
+            el.style.background  = l === label ? 'var(--primary-emerald-xlight)' : '';
+            el.style.color       = l === label ? 'var(--primary-emerald)' : '';
         }
     });
 }

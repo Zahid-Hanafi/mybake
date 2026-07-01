@@ -16,12 +16,12 @@ class PagesController extends AppController
         $this->setCartCount();
         $identity = $this->Authentication->getIdentity();
 
-        // Load promotions for marquee
-        $Promotions = $this->fetchTable('Promotions');
-        $promotions = $Promotions->find()
-            ->where(['is_active' => 1])
-            ->orderBy(['sort_order' => 'ASC'])
-            ->all();
+        // Hardcoded promotions for marquee (removed DB table dependency)
+        $promotions = [
+            (object)['message' => 'Raya Special: 20% off all orders over RM150!'],
+            (object)['message' => 'Free delivery for orders above RM100.'],
+            (object)['message' => 'New Arrival: Kerepek Ubi BBQ Jumbo Pack is here!']
+        ];
 
         // Load best sellers for slideshow
         $Products = $this->fetchTable('Products');
@@ -45,11 +45,24 @@ class PagesController extends AppController
     public function about()
     {
         $this->setCartCount();
-        $Testimonials = $this->fetchTable('Testimonials');
-        $testimonials = $Testimonials->find()
-            ->where(['is_active' => 1])
-            ->orderBy(['sort_order' => 'ASC'])
-            ->all();
+        // Hardcoded testimonials (removed DB table dependency)
+        $testimonials = [
+            (object)[
+                'rating' => 5,
+                'content' => 'The Bahulu Cermai reminds me of my grandmother’s cooking. Absolutely authentic and delicious!',
+                'author_name' => 'Siti N.'
+            ],
+            (object)[
+                'rating' => 5,
+                'content' => 'Best Rempeyek Kacang Tanah I’ve had in years. So crispy and generous with the peanuts!',
+                'author_name' => 'Ahmad F.'
+            ],
+            (object)[
+                'rating' => 5,
+                'content' => 'Packaging is great, shipping was fast, and the Kerepek Ubi BBQ is highly addictive!',
+                'author_name' => 'Wong K.L.'
+            ]
+        ];
         $this->set(compact('testimonials'));
     }
 

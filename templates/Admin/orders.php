@@ -3,8 +3,8 @@
 <!-- Filter Bar -->
 <div style="background:#fff; border-radius:16px; padding:1.25rem; border:1px solid var(--border-light); margin-bottom:1.5rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; box-shadow:var(--shadow-sm);">
     <span style="font-weight:600; font-size:0.875rem; color:var(--text-muted);">Filter by Status:</span>
-    <?php foreach ([''=>'All','pending'=>'Pending','shipping'=>'Shipping','complete'=>'Completed','cancelled'=>'Cancelled'] as $val => $label): ?>
-    <a href="<?= $this->Url->build('/admin/orders<?= $val ? '?status=' . $val : '' ?>') ?>"
+    <?php foreach ([''=>'All','preparing'=>'Preparing','shipping'=>'Shipping','complete'=>'Completed','cancelled'=>'Cancelled'] as $val => $label): ?>
+    <a href="<?= $this->Url->build('/admin/orders' . ($val ? '?status=' . $val : '')) ?>"
        class="btn btn-sm <?= $statusFilter === $val ? 'btn-primary' : 'btn-outline' ?>"
        style="<?= $statusFilter === $val ? '' : 'border-color:var(--border-light);' ?>">
         <?= $label ?>
@@ -51,7 +51,7 @@
                         <div style="font-size:0.78rem; color:var(--text-muted);"><?= h($oi->product_name) ?> ×<?= $oi->quantity ?></div>
                         <?php endforeach; ?>
                     </td>
-                    <td style="font-weight:700; color:var(--primary-teal); white-space:nowrap;">RM <?= number_format($order->total_amount, 2) ?></td>
+                    <td style="font-weight:700; color:var(--primary-emerald); white-space:nowrap;">RM <?= number_format($order->total_amount, 2) ?></td>
                     <td>
                         <span class="status-badge status-<?= $order->status ?>" id="orderStatus-<?= $order->id ?>">
                             <?= ucfirst($order->status) ?>
@@ -61,7 +61,7 @@
                         <select onchange="updateOrderStatus(<?= $order->id ?>, this.value, this)"
                                 class="form-control" style="width:130px; font-size:0.8rem; padding:0.4rem 0.7rem;"
                                 <?= $order->status === 'cancelled' ? 'disabled' : '' ?>>
-                            <option value="pending"   <?= $order->status === 'pending'   ? 'selected' : '' ?>>Pending</option>
+                            <option value="preparing"   <?= $order->status === 'preparing'   ? 'selected' : '' ?>>Preparing</option>
                             <option value="shipping"  <?= $order->status === 'shipping'  ? 'selected' : '' ?>>Shipping</option>
                             <option value="complete"  <?= $order->status === 'complete'  ? 'selected' : '' ?>>Completed</option>
                             <option value="cancelled" <?= $order->status === 'cancelled' ? 'selected' : '' ?>>Cancelled</option>

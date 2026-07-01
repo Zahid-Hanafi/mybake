@@ -10,7 +10,7 @@ class UsersController extends AppController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->Authentication->addUnauthenticatedActions(['login', 'register']);
+        $this->Authentication->addUnauthenticatedActions(['login', 'register', 'logout']);
     }
 
     // ── Login ──────────────────────────────────────────────────────────────
@@ -21,28 +21,44 @@ class UsersController extends AppController
 
         $result = $this->Authentication->getResult();
 
-        if ($result->isValid()) {
-            $identity     = $this->Authentication->getIdentity();
-            $selectedRole = $this->request->getData('role');
-
-            if ($identity->get('role') !== $selectedRole) {
-                $this->Authentication->logout();
-                if ($selectedRole === 'admin') {
-                    $this->Flash->error(__('Access denied. This account is not an Admin. Please select Customer.'));
-                } else {
-                    $this->Flash->error(__('Access denied. Admins must select the Admin option to login.'));
-                }
-                return null;
-            }
-
+        // If already authenticated via session and this is a GET, redirect appropriately
+        if ($this->request->is('get') && $result->isValid()) {
+            $identity = $this->Authentication->getIdentity();
             if ($identity->get('role') === 'admin') {
                 return $this->redirect(['controller' => 'Admin', 'action' => 'dashboard']);
             }
             return $this->redirect(['controller' => 'Pages', 'action' => 'dashboard']);
         }
 
-        if ($this->request->is('post') && !$result->isValid()) {
+        // Handle POST (form submission)
+        if ($this->request->is('post')) {
+            $selectedRole = $this->request->getData('role');
+
+            if ($result->isValid()) {
+                $identity = $this->Authentication->getIdentity();
+
+                // Role mismatch check
+                if (empty($selectedRole) || $identity->get('role') !== $selectedRole) {
+                    $this->Authentication->logout();
+                    if ($selectedRole === 'admin') {
+                        $this->Flash->error(__('Access denied. This account is not an Admin. Please select Customer.'));
+                    } else {
+                        $this->Flash->error(__('Access denied. Admins must select the Admin option to login.'));
+                    }
+                    return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+                }
+
+                // Redirect by role
+                if ($identity->get('role') === 'admin') {
+                    return $this->redirect(['controller' => 'Admin', 'action' => 'dashboard']);
+                }
+                return $this->redirect(['controller' => 'Pages', 'action' => 'dashboard']);
+            }
+
+            // Authentication failed
             $this->Flash->error(__('Invalid email or password. Please try again.'));
+            // Do not redirect on failure, render the form directly so the flash message shows
+            // without relying on session persistence across redirects on localhost.
         }
     }
 
@@ -68,7 +84,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Registration successful! Please login with your email and password.'));
-                return $this->redirect(['action' => 'login']);
+                return $this->redirect(['controller' => 'Users', 'action' => 'login']);
             }
 
             // Collect validation errors for display
@@ -92,7 +108,7 @@ class UsersController extends AppController
     public function logout()
     {
         $this->Authentication->logout();
-        return $this->redirect(['action' => 'login']);
+        return $this->redirect(['controller' => 'Users', 'action' => 'login']);
     }
 
     // ── Profile ────────────────────────────────────────────────────────────
@@ -100,7 +116,7 @@ class UsersController extends AppController
     {
         $this->setCartCount();
         $identity = $this->Authentication->getIdentity();
-        $user     = $this->Users->get($identity->get('id'), contain: ['Addresses']);
+        $user     = $this->Users->get($identity->get('id'), ['contain' => ['Addresses']]);
 
         if ($this->request->is(['post', 'put'])) {
             $data   = $this->request->getData();

@@ -7,6 +7,12 @@ use Cake\Http\Response;
 
 class CartsController extends AppController
 {
+    public function beforeFilter(\Cake\Event\EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions(['index', 'addItem', 'updateItem', 'removeItem', 'count']);
+    }
+
     // Get or create user's cart
     private function getOrCreateCart(int $userId): object
     {
@@ -28,9 +34,15 @@ class CartsController extends AppController
         $identity = $this->Authentication->getIdentity();
         $CartItems = $this->fetchTable('CartItems');
 
-        $cart = $this->Carts->find()
-            ->where(['user_id' => $identity->get('id')])
-            ->first();
+        $items = [];
+        $total = 0;
+        $cart = null;
+
+        if ($identity) {
+            $cart = $this->Carts->find()
+                ->where(['user_id' => $identity->get('id')])
+                ->first();
+        }
 
         $items = [];
         $total = 0;
@@ -47,7 +59,7 @@ class CartsController extends AppController
 
         // Return JSON for AJAX cart panel
         if ($this->request->is('ajax')) {
-            $this->viewBuilder()->setLayout('ajax');
+            $this->viewBuilder()->setClassName('Json');
             $this->set(compact('items', 'total'));
             $this->viewBuilder()->setOption('serialize', ['items', 'total']);
         }
@@ -59,8 +71,11 @@ class CartsController extends AppController
     public function addItem(): Response|null
     {
         $this->request->allowMethod(['post']);
-        $identity   = $this->Authentication->getIdentity();
-        $userId     = $identity->get('id');
+        $identity = $this->Authentication->getIdentity();
+        if (!$identity) {
+            return $this->response->withType('json')->withStringBody(json_encode(['error' => 'unauthenticated', 'redirect' => \Cake\Routing\Router::url('/register')]));
+        }
+        $userId = $identity->get('id');
         $productId  = (int)$this->request->getData('product_id');
         $quantity   = (int)$this->request->getData('quantity', 1);
 
@@ -93,7 +108,7 @@ class CartsController extends AppController
         }
 
         // Return updated count
-        $count = $CartItems->find()->where(['cart_id' => $cart->id])->sumOf('quantity') ?? 0;
+        $count = $CartItems->find()->where(['cart_id' => $cart->id])->all()->sumOf('quantity') ?? 0;
 
         if ($this->request->is('ajax')) {
             $this->viewBuilder()->setLayout('ajax');
@@ -113,7 +128,7 @@ class CartsController extends AppController
         $quantity  = (int)$this->request->getData('quantity', 1);
         $CartItems = $this->fetchTable('CartItems');
 
-        $item = $CartItems->get($id, contain: ['Carts']);
+        $item = $CartItems->get($id, ['contain' => ['Carts']]);
         if ($item->cart->user_id !== $identity->get('id')) {
             return $this->response->withStatus(403)->withStringBody(json_encode(['error' => 'Forbidden']));
         }
@@ -126,7 +141,7 @@ class CartsController extends AppController
         }
 
         // Recalculate total
-        $cart  = $this->fetchTable('Carts')->get($item->cart_id, contain: ['CartItems.Products']);
+        $cart  = $this->fetchTable('Carts')->get($item->cart_id, ['contain' => ['CartItems.Products']]);
         $total = 0;
         $count = 0;
         foreach ($cart->cart_items as $ci) {
@@ -145,7 +160,7 @@ class CartsController extends AppController
         $identity  = $this->Authentication->getIdentity();
         $CartItems = $this->fetchTable('CartItems');
 
-        $item = $CartItems->get($id, contain: ['Carts']);
+        $item = $CartItems->get($id, ['contain' => ['Carts']]);
         if ($item->cart->user_id !== $identity->get('id')) {
             return $this->response->withStatus(403)->withStringBody(json_encode(['error' => 'Forbidden']));
         }
@@ -176,7 +191,7 @@ class CartsController extends AppController
         $identity  = $this->Authentication->getIdentity();
         $CartItems = $this->fetchTable('CartItems');
         $cart = $this->Carts->find()->where(['user_id' => $identity->get('id')])->first();
-        $count = $cart ? ($CartItems->find()->where(['cart_id' => $cart->id])->sumOf('quantity') ?? 0) : 0;
+        $count = $cart ? ($CartItems->find()->where(['cart_id' => $cart->id])->all()->sumOf('quantity') ?? 0) : 0;
         return $this->response->withType('json')->withStringBody(json_encode(['count' => $count]));
     }
 }

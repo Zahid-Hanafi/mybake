@@ -16,7 +16,7 @@
             <input type="date" name="date" value="<?= h($date) ?>" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Generate</button>
-        <a href="<?= $this->Url->build('/admin/sales/report?type=<?= h($type) ?>&date=<?= h($date) ?>&format=pdf') ?>" class="btn btn-gold">
+        <a href="<?= $this->Url->build('/admin/sales/report?type=' . h($type) . '&date=' . h($date) . '&format=pdf') ?>" class="btn btn-gold" target="_blank">
             <i class="fas fa-file-pdf"></i> Export PDF
         </a>
     </form>
@@ -30,7 +30,7 @@ $period = $type === 'daily' ? "Daily Report — " . date('d M Y', strtotime($sta
 ?>
 
 <!-- Period Header -->
-<div style="background:linear-gradient(135deg,var(--primary-teal-dark),var(--primary-teal)); border-radius:16px; padding:1.5rem; margin-bottom:1.5rem; color:#fff; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+<div style="background:linear-gradient(135deg,var(--primary-emerald-dark),var(--primary-emerald)); border-radius:16px; padding:1.5rem; margin-bottom:1.5rem; color:#fff; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
     <div>
         <p style="font-size:0.75rem; opacity:0.7; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.25rem;">Sales Report</p>
         <h2 style="font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:700;"><?= $period ?></h2>
@@ -50,9 +50,9 @@ $period = $type === 'daily' ? "Daily Report — " . date('d M Y', strtotime($sta
 
 <!-- Summary Cards -->
 <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; margin-bottom:2rem;">
-    <div class="stat-card teal">
+    <div class="stat-card emerald">
         <p class="stat-label">Online Sales</p>
-        <p class="stat-value" style="color:var(--primary-teal);">RM <?= number_format($rd['onlineTotal'], 2) ?></p>
+        <p class="stat-value" style="color:var(--primary-emerald);">RM <?= number_format($rd['onlineTotal'], 2) ?></p>
         <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;"><?= count($rd['onlineOrders']) ?> orders</p>
     </div>
     <div class="stat-card gold">
@@ -70,7 +70,7 @@ $period = $type === 'daily' ? "Daily Report — " . date('d M Y', strtotime($sta
 <?php if (count($rd['onlineOrders']) > 0): ?>
 <div style="background:#fff; border-radius:20px; border:1px solid var(--border-light); overflow:hidden; margin-bottom:1.5rem; box-shadow:var(--shadow-sm);">
     <div style="padding:1.25rem 1.5rem; border-bottom:1px solid var(--border-light); font-weight:700; display:flex; align-items:center; gap:0.6rem;">
-        <i class="fas fa-globe" style="color:var(--primary-teal);"></i> Online Orders
+        <i class="fas fa-globe" style="color:var(--primary-emerald);"></i> Online Orders
     </div>
     <div class="table-wrapper" style="border:none; border-radius:0;">
         <table>
@@ -85,7 +85,7 @@ $period = $type === 'daily' ? "Daily Report — " . date('d M Y', strtotime($sta
                     <td style="font-size:0.8rem;">
                         <?php foreach ($o->order_items as $oi): ?><div><?= h($oi->product_name) ?> ×<?= $oi->quantity ?></div><?php endforeach; ?>
                     </td>
-                    <td style="font-weight:700; color:var(--primary-teal);">RM <?= number_format($o->total_amount, 2) ?></td>
+                    <td style="font-weight:700; color:var(--primary-emerald);">RM <?= number_format($o->total_amount, 2) ?></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>

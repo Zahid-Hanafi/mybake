@@ -2,7 +2,7 @@
 <div style="padding:2rem 0 4rem;">
 <div class="container" style="max-width:600px;">
     <div style="margin-bottom:2rem;">
-        <a href="<?= $this->Url->build('/profile/addresses') ?>" style="color:var(--text-muted); font-size:0.875rem; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:0.75rem; transition:color 0.2s;" onmouseover="this.style.color='var(--primary-teal)'" onmouseout="this.style.color='var(--text-muted)'">
+        <a href="<?= $this->Url->build('/profile/addresses') ?>" style="color:var(--text-muted); font-size:0.875rem; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:0.75rem; transition:color 0.2s;" onmouseover="this.style.color='var(--primary-emerald)'" onmouseout="this.style.color='var(--text-muted)'">
             <i class="fas fa-arrow-left"></i> Back to Addresses
         </a>
         <p class="section-label">Delivery Location</p>
@@ -81,9 +81,9 @@ function selectLabel(label) {
     ['Home','Work','Other'].forEach(l => {
         const el = document.getElementById('lbl-' + l);
         if (el) {
-            el.style.borderColor = l === label ? 'var(--primary-teal)' : 'var(--border-light)';
-            el.style.background  = l === label ? 'var(--primary-teal-xlight)' : '';
-            el.style.color       = l === label ? 'var(--primary-teal)' : '';
+            el.style.borderColor = l === label ? 'var(--primary-emerald)' : 'var(--border-light)';
+            el.style.background  = l === label ? 'var(--primary-emerald-xlight)' : '';
+            el.style.color       = l === label ? 'var(--primary-emerald)' : '';
         }
     });
 }

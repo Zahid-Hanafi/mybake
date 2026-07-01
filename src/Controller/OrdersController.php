@@ -28,12 +28,16 @@ class OrdersController extends AppController
             return $this->redirect(['controller' => 'Products', 'action' => 'index']);
         }
 
-        $addresses = $Addresses->find()->where(['user_id' => $userId])->orderBy(['is_default' => 'DESC'])->all();
+        $addresses = $Addresses->find()->where(['user_id' => $userId])->order(['is_default' => 'DESC'])->all();
         $user      = $Users->get($userId);
-        $total     = 0;
+        $subtotal = 0;
         foreach ($cart->cart_items as $item) {
-            $total += $item->product->price * $item->quantity;
+            $subtotal += $item->product->price * $item->quantity;
         }
+        
+        $discount = ($subtotal >= 150) ? ($subtotal * 0.20) : 0;
+        $deliveryFee = ($subtotal >= 100) ? 0.00 : 8.00;
+        $total = ($subtotal - $discount) + $deliveryFee;
 
         // POST — place order
         if ($this->request->is('post')) {
@@ -58,8 +62,10 @@ class OrdersController extends AppController
                 'address_id'       => $addressId ?: null,
                 'delivery_address' => $deliveryAddress,
                 'phone_no'         => $user->phone_no,
+                'discount'         => $discount,
+                'delivery_fee'     => $deliveryFee,
                 'total_amount'     => $total,
-                'status'           => 'pending',
+                'status'           => 'preparing',
                 'notes'            => $notes,
             ]);
 
@@ -88,7 +94,7 @@ class OrdersController extends AppController
                     $CartItems->delete($ci);
                 }
 
-                $this->Flash->success(__('Order placed successfully! Your order is pending confirmation.'));
+                $this->Flash->success(__('Order placed successfully! Your order is preparing confirmation.'));
                 return $this->redirect(['action' => 'myOrders']);
             }
 
@@ -96,6 +102,7 @@ class OrdersController extends AppController
         }
 
         $this->set(compact('cart', 'addresses', 'user', 'total'));
+        return null;
     }
 
     // GET /my-orders — customer order history
@@ -106,7 +113,7 @@ class OrdersController extends AppController
         $myOrders = $this->Orders->find()
             ->where(['user_id' => $identity->get('id')])
             ->contain(['OrderItems.Products'])
-            ->orderBy(['Orders.created_at' => 'DESC'])
+            ->order(['Orders.created_at' => 'DESC'])
             ->all();
 
         $this->set(compact('myOrders'));
@@ -117,7 +124,7 @@ class OrdersController extends AppController
     {
         $this->setCartCount();
         $identity = $this->Authentication->getIdentity();
-        $order    = $this->Orders->get($id, contain: ['OrderItems.Products', 'Users']);
+        $order    = $this->Orders->get($id, ['contain' => ['OrderItems.Products', 'Users']]);
 
         if ($order->user_id !== $identity->get('id')) {
             $this->Flash->error(__('Access denied.'));
@@ -128,21 +135,37 @@ class OrdersController extends AppController
         $this->set(compact('order'));
     }
 
-    // GET/POST /my-orders/edit/{id} — customer can edit address, qty, phone
-    public function edit(int $id): Response|null
+    // GET /my-orders/receipt/{id}
+    public function receipt(int $id): Response|null
     {
-        $this->setCartCount();
-        $identity  = $this->Authentication->getIdentity();
-        $Addresses = $this->fetchTable('Addresses');
-        $order     = $this->Orders->get($id, contain: ['OrderItems.Products']);
+        $identity = $this->Authentication->getIdentity();
+        $order    = $this->Orders->get($id, ['contain' => ['OrderItems.Products', 'Users']]);
 
         if ($order->user_id !== $identity->get('id')) {
             $this->Flash->error(__('Access denied.'));
             return $this->redirect(['action' => 'myOrders']);
         }
 
-        if ($order->status !== 'pending') {
-            $this->Flash->error(__('Only pending orders can be edited.'));
+        $this->viewBuilder()->disableAutoLayout();
+        $this->set(compact('order'));
+        return null;
+    }
+
+    // GET/POST /my-orders/edit/{id} — customer can edit address, qty, phone
+    public function edit(int $id): Response|null
+    {
+        $this->setCartCount();
+        $identity  = $this->Authentication->getIdentity();
+        $Addresses = $this->fetchTable('Addresses');
+        $order     = $this->Orders->get($id, ['contain' => ['OrderItems.Products']]);
+
+        if ($order->user_id !== $identity->get('id')) {
+            $this->Flash->error(__('Access denied.'));
+            return $this->redirect(['action' => 'myOrders']);
+        }
+
+        if ($order->status !== 'preparing') {
+            $this->Flash->error(__('Only preparing orders can be edited.'));
             return $this->redirect(['action' => 'myOrders']);
         }
 
@@ -182,9 +205,9 @@ class OrdersController extends AppController
     {
         $this->request->allowMethod(['post']);
         $identity = $this->Authentication->getIdentity();
-        $order    = $this->Orders->get($id, contain: ['OrderItems']);
+        $order    = $this->Orders->get($id, ['contain' => ['OrderItems']]);
 
-        if ($order->user_id !== $identity->get('id') || $order->status !== 'pending') {
+        if ($order->user_id !== $identity->get('id') || $order->status !== 'preparing') {
             $this->Flash->error(__('Cannot cancel this order.'));
             return $this->redirect(['action' => 'myOrders']);
         }

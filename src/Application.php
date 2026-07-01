@@ -65,20 +65,32 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
+        $base = $request->getAttribute('base') ?? '';
+
         $service = new AuthenticationService([
-            'unauthenticatedRedirect' => \Cake\Routing\Router::url(['controller' => 'Users', 'action' => 'login']),
-            'queryParam' => 'redirect',
+            'unauthenticatedRedirect' => $base . '/login',
+            'queryParam'              => 'redirect',
         ]);
 
-        // MyBake uses email as the login identifier
         $service->loadIdentifier('Authentication.Password', [
-            'fields' => ['username' => 'email', 'password' => 'password']
+            'fields' => [
+                'username' => 'email',
+                'password' => 'password',
+            ],
         ]);
 
+        // Session authenticator runs first — restores identity for already-logged-in users.
         $service->loadAuthenticator('Authentication.Session');
+
+        // Form authenticator — NO loginUrl set (defaults to null).
+        // When loginUrl is null, DefaultUrlChecker returns true immediately (empty URL list = no restriction).
+        // This means Form auth tries on every request but only SUCCEEDS when valid email+password
+        // are present in POST data. Session auth above handles all subsequent page loads.
         $service->loadAuthenticator('Authentication.Form', [
-            'fields'   => ['username' => 'email', 'password' => 'password'],
-            'loginUrl' => \Cake\Routing\Router::url(['controller' => 'Users', 'action' => 'login']),
+            'fields' => [
+                'username' => 'email',
+                'password' => 'password',
+            ],
         ]);
 
         return $service;

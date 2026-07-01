@@ -23,27 +23,15 @@ class AdminController extends AppController
 
         // Total online revenue
         $onlineRevenue = $Orders->find()
-            ->where(['status IN' => ['pending', 'shipping', 'complete']])
-            ->sumOf('total_amount') ?? 0;
+            ->where(['status IN' => ['preparing', 'shipping', 'complete']])
+            ->all()->sumOf('total_amount') ?? 0;
 
         // Total offline revenue
-        $offlineRevenue = $OfflineSales->find()->sumOf('total_amount') ?? 0;
+        $offlineRevenue = $OfflineSales->find()->all()->sumOf('total_amount') ?? 0;
 
         $totalRevenue  = $onlineRevenue + $offlineRevenue;
         
-        $totalProfit = 0;
-        $allOnline = $Orders->find()->where(['status IN' => ['pending', 'shipping', 'complete']])->contain(['OrderItems'])->all();
-        foreach ($allOnline as $order) {
-            foreach ($order->order_items as $item) {
-                $totalProfit += ($item->unit_price - $item->cost_price) * $item->quantity;
-            }
-        }
-        $allOffline = $OfflineSales->find()->contain(['OfflineSaleItems'])->all();
-        foreach ($allOffline as $sale) {
-            foreach ($sale->offline_sale_items as $item) {
-                $totalProfit += ($item->unit_price - $item->cost_price) * $item->quantity;
-            }
-        }
+        $totalProfit = $totalRevenue * 0.5;
         
         $totalOrders   = $Orders->find()->count();
 
@@ -53,12 +41,18 @@ class AdminController extends AppController
             $month     = date('Y-m', strtotime("-$i months"));
             $label     = date('M Y', strtotime("-$i months"));
             $monthlyOnline  = $Orders->find()
-                ->where(['DATE_FORMAT(created_at, "%Y-%m")' => $month,
-                         'status IN' => ['pending', 'shipping', 'complete']])
-                ->sumOf('total_amount') ?? 0;
+                ->where(function ($exp, $q) use ($month) {
+                    return $exp->and([
+                        $exp->eq($q->func()->date_format(['created_at' => 'identifier', '%Y-%m']), $month),
+                        $exp->in('status', ['preparing', 'shipping', 'complete']),
+                    ]);
+                })
+                ->all()->sumOf('total_amount') ?? 0;
             $monthlyOffline = $OfflineSales->find()
-                ->where(['DATE_FORMAT(sale_date, "%Y-%m")' => $month])
-                ->sumOf('total_amount') ?? 0;
+                ->where(function ($exp, $q) use ($month) {
+                    return $exp->eq($q->func()->date_format(['sale_date' => 'identifier', '%Y-%m']), $month);
+                })
+                ->all()->sumOf('total_amount') ?? 0;
             $chartData[] = [
                 'label'   => $label,
                 'online'  => (float)$monthlyOnline,
@@ -70,7 +64,7 @@ class AdminController extends AppController
         // Products with stock levels
         $products = $Products->find()
             ->contain(['ProductLines'])
-            ->orderBy(['stock_quantity' => 'ASC'])
+            ->order(['stock_quantity' => 'ASC'])
             ->all();
 
         $this->set(compact(
@@ -92,7 +86,7 @@ class AdminController extends AppController
         $orders = $Orders->find()
             ->where($conditions)
             ->contain(['Users', 'OrderItems.Products'])
-            ->orderBy(['Orders.created_at' => 'DESC'])
+            ->order(['Orders.created_at' => 'DESC'])
             ->all();
 
         $this->set(compact('orders', 'statusFilter'));
@@ -105,7 +99,7 @@ class AdminController extends AppController
         $Orders  = $this->fetchTable('Orders');
         $order   = $Orders->get($id);
         $status  = $this->request->getData('status');
-        $allowed = ['pending', 'shipping', 'complete', 'cancelled'];
+        $allowed = ['preparing', 'shipping', 'complete', 'cancelled'];
 
         if (!in_array($status, $allowed)) {
             return $this->response->withType('json')
@@ -123,7 +117,7 @@ class AdminController extends AppController
     public function stock(): void
     {
         $Products = $this->fetchTable('Products');
-        $products = $Products->find()->contain(['ProductLines'])->orderBy(['ProductLines.sort_order' => 'ASC', 'Products.name' => 'ASC'])->all();
+        $products = $Products->find()->contain(['ProductLines'])->order(['ProductLines.sort_order' => 'ASC', 'Products.name' => 'ASC'])->all();
         $this->set(compact('products'));
     }
 

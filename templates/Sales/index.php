@@ -9,12 +9,12 @@
         </div>
         <p class="stat-value" style="color:var(--secondary-gold-dark);">RM <?= number_format($totalRevenue, 2) ?></p>
     </div>
-    <div class="stat-card teal">
+    <div class="stat-card emerald">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.75rem;">
             <p class="stat-label">Estimated Profit</p>
-            <div class="stat-icon" style="background:var(--primary-teal-xlight); color:var(--primary-teal);"><i class="fas fa-coins"></i></div>
+            <div class="stat-icon" style="background:var(--primary-emerald-xlight); color:var(--primary-emerald);"><i class="fas fa-coins"></i></div>
         </div>
-        <p class="stat-value" style="color:var(--primary-teal);">RM <?= number_format($totalProfit, 2) ?></p>
+        <p class="stat-value" style="color:var(--primary-emerald);">RM <?= number_format($totalProfit, 2) ?></p>
     </div>
     <div class="stat-card green">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.75rem;">
@@ -42,7 +42,7 @@
     <?php if (empty($sales) || count($sales) === 0): ?>
     <div style="text-align:center; padding:3rem 2rem; color:var(--text-muted);">
         <i class="fas fa-inbox" style="font-size:3rem; opacity:0.25; display:block; margin-bottom:1rem;"></i>
-        <p>No offline sales records yet. <a href="<?= $this->Url->build('/admin/sales/add') ?>" style="color:var(--primary-teal); font-weight:600;">Add one now</a>.</p>
+        <p>No offline sales records yet. <a href="<?= $this->Url->build('/admin/sales/add') ?>" style="color:var(--primary-emerald); font-weight:600;">Add one now</a>.</p>
     </div>
     <?php else: ?>
     <div class="table-wrapper" style="border:none; border-radius:0;">

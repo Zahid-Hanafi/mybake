@@ -23,14 +23,14 @@
 
 <!-- Stats -->
 <?php
-$counts = ['pending'=>0,'shipping'=>0,'complete'=>0,'cancelled'=>0];
+$counts = ['preparing'=>0,'shipping'=>0,'complete'=>0,'cancelled'=>0];
 $totalSpent = 0;
 foreach ($myOrders as $o) { $counts[$o->status] = ($counts[$o->status] ?? 0) + 1; if ($o->status !== 'cancelled') $totalSpent += $o->total_amount; }
 ?>
 <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem;">
     <?php
     $stats = [
-        ['Pending',   $counts['pending'],   'fa-clock',        '#B45309','#FEF3C7'],
+        ['Preparing',   $counts['preparing'],   'fa-clock',        '#B45309','#FEF3C7'],
         ['Shipping',  $counts['shipping'],  'fa-truck',        '#1D4ED8','#DBEAFE'],
         ['Completed', $counts['complete'],  'fa-circle-check', '#15803D','#DCFCE7'],
         ['Cancelled', $counts['cancelled'], 'fa-circle-xmark', '#6B7280','#F3F4F6'],
@@ -60,11 +60,11 @@ foreach ($myOrders as $o) { $counts[$o->status] = ($counts[$o->status] ?? 0) + 1
                 <div style="width:1px; height:32px; background:var(--border-light);"></div>
                 <div>
                     <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em;">Total Amount</div>
-                    <div style="font-weight:700; color:var(--primary-teal); font-family:'Playfair Display',serif; font-size:1rem;">RM <?= number_format($order->total_amount, 2) ?></div>
+                    <div style="font-weight:700; color:var(--primary-emerald); font-family:'Playfair Display',serif; font-size:1rem;">RM <?= number_format($order->total_amount, 2) ?></div>
                 </div>
             </div>
             <span class="status-badge status-<?= $order->status ?>">
-                <i class="fas fa-<?= ['pending'=>'clock','shipping'=>'truck','complete'=>'check-circle','cancelled'=>'times-circle'][$order->status] ?? 'circle' ?>"></i>
+                <i class="fas fa-<?= ['preparing'=>'clock','shipping'=>'truck','complete'=>'check-circle','cancelled'=>'times-circle'][$order->status] ?? 'circle' ?>"></i>
                 <?= ucfirst($order->status) ?>
             </span>
         </div>
@@ -74,29 +74,35 @@ foreach ($myOrders as $o) { $counts[$o->status] = ($counts[$o->status] ?? 0) + 1
             <div style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;">
                 <?php foreach ($order->order_items as $oi): ?>
                 <div style="display:flex; align-items:center; gap:0.6rem; background:var(--bg-light); padding:0.5rem 0.75rem; border-radius:10px; font-size:0.8rem;">
-                    <i class="fas fa-cookie-bite" style="color:var(--primary-teal);"></i>
+                    <i class="fas fa-cookie-bite" style="color:var(--primary-emerald);"></i>
                     <span style="font-weight:500;"><?= h($oi->product_name) ?></span>
                     <span style="color:var(--text-muted);">× <?= $oi->quantity ?></span>
-                    <span style="color:var(--primary-teal); font-weight:600;">RM <?= number_format($oi->subtotal, 2) ?></span>
+                    <span style="color:var(--primary-emerald); font-weight:600;">RM <?= number_format($oi->subtotal, 2) ?></span>
                 </div>
                 <?php endforeach; ?>
             </div>
 
             <!-- Delivery address -->
             <div style="font-size:0.8rem; color:var(--text-muted); display:flex; align-items:flex-start; gap:0.5rem; margin-bottom:1rem;">
-                <i class="fas fa-map-marker-alt" style="color:var(--primary-teal); margin-top:0.1rem; flex-shrink:0;"></i>
+                <i class="fas fa-map-marker-alt" style="color:var(--primary-emerald); margin-top:0.1rem; flex-shrink:0;"></i>
                 <?= h($order->delivery_address) ?>
             </div>
 
             <!-- Actions -->
             <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
-                <a href="<?= $this->Url->build('/my-orders/view/<?= $order->id ?>') ?>" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i> View Details</a>
-                <?php if ($order->status === 'pending'): ?>
-                <a href="<?= $this->Url->build('/my-orders/edit/<?= $order->id ?>') ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil"></i> Edit Order</a>
-                <form method="post" action="<?= $this->Url->build('/my-orders/cancel/<?= $order->id ?>') ?>" style="margin:0;" onsubmit="return confirm('Cancel this order? Stock will be restored.')">
-                    <?= $this->Form->hidden('_csrfToken', ['id' => false]) ?>
-                    <button type="submit" class="btn btn-sm" style="background:#FFF1F2; color:#DC2626; border:none;"><i class="fas fa-times"></i> Cancel</button>
-                </form>
+                <a href="<?= $this->Url->build('/my-orders/view/' . $order->id) ?>" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i> View Details</a>
+                <?php if ($order->status === 'preparing'): ?>
+                <a href="<?= $this->Url->build('/my-orders/edit/' . $order->id) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil"></i> Edit Order</a>
+                <?= $this->Form->postLink(
+                    '<i class="fas fa-times"></i> Cancel',
+                    ['action' => 'cancel', $order->id],
+                    [
+                        'confirm' => 'Cancel this order? Stock will be restored.',
+                        'escape' => false,
+                        'class' => 'btn btn-sm',
+                        'style' => 'background:#FFF1F2; color:#DC2626; border:none;'
+                    ]
+                ) ?>
                 <?php endif; ?>
             </div>
         </div>

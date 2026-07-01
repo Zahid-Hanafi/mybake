@@ -21,7 +21,7 @@
     <title>
         <?= $this->fetch('title') ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
+    <link rel="icon" type="image/svg+xml" href="<?= $this->request->getAttribute('webroot') ?>favicon.svg">
 
     <?= $this->Html->css(['normalize.min', 'milligram.min', 'fonts', 'cake']) ?>
 
