@@ -44,6 +44,7 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/checkout',             ['controller' => 'Orders', 'action' => 'checkout']);
         $builder->connect('/my-orders',            ['controller' => 'Orders', 'action' => 'myOrders']);
         $builder->connect('/my-orders/view/{id}',  ['controller' => 'Orders', 'action' => 'view'], ['pass' => ['id']]);
+        $builder->connect('/my-orders/receive/{id}',['controller' => 'Orders', 'action' => 'markReceived'], ['pass' => ['id']]);
         $builder->connect('/my-orders/receipt/{id}',['controller' => 'Orders', 'action' => 'receipt'], ['pass' => ['id']]);
         $builder->connect('/my-orders/edit/{id}',  ['controller' => 'Orders', 'action' => 'edit'], ['pass' => ['id']]);
         $builder->connect('/my-orders/cancel/{id}',['controller' => 'Orders', 'action' => 'cancel'], ['pass' => ['id']]);
@@ -53,12 +54,18 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/admin/dashboard',       ['controller' => 'Admin', 'action' => 'dashboard']);
         $builder->connect('/admin/orders',          ['controller' => 'Admin', 'action' => 'orders']);
         $builder->connect('/admin/orders/status/{id}', ['controller' => 'Admin', 'action' => 'updateStatus'], ['pass' => ['id']]);
+        $builder->connect('/admin/orders/bulk-update', ['controller' => 'Admin', 'action' => 'bulkUpdate']);
+        $builder->connect('/admin/orders/scan/{token}', ['controller' => 'Admin', 'action' => 'scan'], ['pass' => ['token']]);
+        $builder->connect('/admin/orders/ship/{id}', ['controller' => 'Admin', 'action' => 'ship'], ['pass' => ['id']]);
+        $builder->connect('/admin/orders/packing-slip/{id}', ['controller' => 'Admin', 'action' => 'packingSlip'], ['pass' => ['id']]);
         $builder->connect('/admin/stock',           ['controller' => 'Admin', 'action' => 'stock']);
         $builder->connect('/admin/stock/restock/{id}',   ['controller' => 'Admin', 'action' => 'restock'], ['pass' => ['id']]);
         $builder->connect('/admin/stock/toggle/{id}',    ['controller' => 'Admin', 'action' => 'toggleStatus'], ['pass' => ['id']]);
         $builder->connect('/admin/sales',           ['controller' => 'Sales', 'action' => 'index']);
         $builder->connect('/admin/sales/add',       ['controller' => 'Sales', 'action' => 'add']);
         $builder->connect('/admin/sales/report',    ['controller' => 'Sales', 'action' => 'report']);
+        $builder->connect('/admin/chart-data',      ['controller' => 'Admin', 'action' => 'chartData']);
+        $builder->connect('/admin/product-trends',  ['controller' => 'Admin', 'action' => 'productTrends']);
 
         $builder->fallbacks();
     });

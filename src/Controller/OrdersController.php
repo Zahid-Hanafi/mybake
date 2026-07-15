@@ -56,7 +56,8 @@ class OrdersController extends AppController
                 }
             }
 
-            // Create order
+            // Create order with QR token
+            $qrToken = bin2hex(random_bytes(32));
             $order = $this->Orders->newEntity([
                 'user_id'          => $userId,
                 'address_id'       => $addressId ?: null,
@@ -67,9 +68,19 @@ class OrdersController extends AppController
                 'total_amount'     => $total,
                 'status'           => 'preparing',
                 'notes'            => $notes,
+                'qr_token'         => $qrToken,
             ]);
 
             if ($this->Orders->save($order)) {
+                // Log initial status
+                $StatusLogs = $this->fetchTable('OrderStatusLogs');
+                $StatusLogs->save($StatusLogs->newEntity([
+                    'order_id' => $order->id,
+                    'status' => 'preparing',
+                    'note' => 'Order placed by customer',
+                    'created_by' => $userId,
+                ]));
+
                 // Save order items & reduce stock
                 $OrderItems = $this->fetchTable('OrderItems');
                 $Products   = $this->fetchTable('Products');
@@ -94,7 +105,7 @@ class OrdersController extends AppController
                     $CartItems->delete($ci);
                 }
 
-                $this->Flash->success(__('Order placed successfully! Your order is preparing confirmation.'));
+                $this->Flash->success(__('Order placed successfully! Your order is being prepared.'));
                 return $this->redirect(['action' => 'myOrders']);
             }
 
@@ -124,7 +135,7 @@ class OrdersController extends AppController
     {
         $this->setCartCount();
         $identity = $this->Authentication->getIdentity();
-        $order    = $this->Orders->get($id, ['contain' => ['OrderItems.Products', 'Users']]);
+        $order    = $this->Orders->get($id, ['contain' => ['OrderItems.Products', 'Users', 'OrderStatusLogs']]);
 
         if ($order->user_id !== $identity->get('id')) {
             $this->Flash->error(__('Access denied.'));
@@ -133,6 +144,42 @@ class OrdersController extends AppController
         }
 
         $this->set(compact('order'));
+    }
+
+    // POST /my-orders/receive/{id}
+    public function markReceived(int $id): Response|null
+    {
+        $this->request->allowMethod(['post']);
+        $identity = $this->Authentication->getIdentity();
+        $order    = $this->Orders->get($id);
+
+        if ($order->user_id !== $identity->get('id')) {
+            $this->Flash->error(__('Access denied.'));
+            return $this->redirect(['action' => 'myOrders']);
+        }
+
+        if ($order->status !== 'shipping') {
+            $this->Flash->error(__('Only shipped orders can be marked as received.'));
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
+        $order->status = 'complete';
+        $order->completed_at = new \Cake\I18n\FrozenTime();
+        
+        if ($this->Orders->save($order)) {
+            $StatusLogs = $this->fetchTable('OrderStatusLogs');
+            $StatusLogs->save($StatusLogs->newEntity([
+                'order_id' => $order->id,
+                'status' => 'complete',
+                'note' => 'Order marked as received by customer',
+                'created_by' => $identity->get('id'),
+            ]));
+            $this->Flash->success(__('Thank you! Your order has been marked as received.'));
+        } else {
+            $this->Flash->error(__('Something went wrong. Please try again.'));
+        }
+
+        return $this->redirect(['action' => 'view', $id]);
     }
 
     // GET /my-orders/receipt/{id}

@@ -2,9 +2,9 @@
 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
     <div>
         <h1 class="text-2xl lg:text-3xl font-bold text-gray-900">Merchandise Store</h1>
-        <p class="text-gray-500 mt-1">Shop official PMH merchandise and place your pre-orders</p>
+        <p class="text-gray-500 mt-1">Shop official MyBake merchandise and place your pre-orders</p>
     </div>
-    <a href="#my-orders" class="inline-flex items-center gap-2 text-pmh-purple font-semibold hover:underline">
+    <a href="#my-orders" class="inline-flex items-center gap-2 text-primary-emerald font-semibold hover:underline">
         <i class="fas fa-history"></i> View My Orders
     </a>
 </div>
@@ -15,8 +15,8 @@
         <div class="w-full md:flex-grow">
             <label for="categoryFilter" class="block text-sm font-bold text-gray-700 mb-2">Filter by Category</label>
             <div class="relative">
-                <i class="fas fa-filter absolute left-4 top-1/2 -translate-y-1/2 text-pmh-purple"></i>
-                <select id="categoryFilter" onchange="filterProducts()" class="w-full pl-12 pr-10 py-3 border border-gray-200 rounded-xl appearance-none focus:ring-2 focus:ring-pmh-purple focus:border-pmh-purple transition-all outline-none bg-white cursor-pointer">
+                <i class="fas fa-filter absolute left-4 top-1/2 -translate-y-1/2 text-primary-emerald"></i>
+                <select id="categoryFilter" onchange="filterProducts()" class="w-full pl-12 pr-10 py-3 border border-gray-200 rounded-xl appearance-none focus:ring-2 focus:ring-primary-emerald focus:border-primary-emerald transition-all outline-none bg-white cursor-pointer">
                     <option value="all">Show All Categories</option>
                     <?php 
                     $category_options = ['New Arrival', 'T-Shirt Ivory Edition', 'T-Shirt Raven Edition', 'Tote Bags', 'Badges Ivory Edition', 'Badges Raven Edition'];
@@ -39,7 +39,7 @@ foreach ($category_list as $current_cat):
 ?>
 <div class="mb-12 category-section transition-all duration-300" data-category="<?= h($current_cat) ?>">
     <div class="flex items-center gap-3 mb-6">
-        <div class="w-2 h-8 bg-gradient-to-b from-pmh-purple to-pmh-purple-dark rounded-full"></div>
+        <div class="w-2 h-8 bg-gradient-to-b from-primary-emerald to-primary-emerald-dark rounded-full"></div>
         <h2 class="text-xl font-bold text-gray-900"><?= $current_cat ?></h2>
     </div>
     
@@ -47,7 +47,7 @@ foreach ($category_list as $current_cat):
         <?php foreach ($products as $product): ?>
             <?php if (trim($product->category) === $current_cat): ?>
             <!-- Product Card -->
-            <div class="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl hover:border-pmh-purple/30 transition-all flex flex-col h-full">
+            <div class="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl hover:border-primary-emerald/30 transition-all flex flex-col h-full">
                 <div class="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 relative overflow-hidden">
                     <?= $this->Html->image('products/' . h($product->image), ['class' => 'max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300']) ?>
                     <?php if ($product->status === 'closed'): ?>
@@ -59,7 +59,7 @@ foreach ($category_list as $current_cat):
                     <?php else: ?>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
                             <button onclick="openOrderModal('<?= $product->id ?>', '<?= h(addslashes($product->name)) ?>', '<?= $product->price ?>')" 
-                                class="bg-pmh-yellow text-pmh-purple font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors shadow-lg">
+                                class="bg-secondary-gold text-primary-emerald font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors shadow-lg">
                                 Quick Order
                             </button>
                         </div>
@@ -68,7 +68,7 @@ foreach ($category_list as $current_cat):
                 <div class="p-4 flex flex-col flex-grow">
                     <h3 class="font-semibold text-gray-900 text-sm mb-1 line-clamp-2 min-h-[40px]"><?= h($product->name) ?></h3>
                     <div class="flex items-center justify-between mt-auto pt-2">
-                        <p class="text-pmh-purple font-bold text-lg">RM <?= number_format($product->price, 2) ?></p>
+                        <p class="text-primary-emerald font-bold text-lg">RM <?= number_format($product->price, 2) ?></p>
                         
                         <div class="flex items-center gap-2">
                             <!-- Admin Edit Status Button -->
@@ -86,7 +86,7 @@ foreach ($category_list as $current_cat):
                                     </button>
                                 <?php else: ?>
                                     <button onclick="openOrderModal('<?= $product->id ?>', '<?= h(addslashes($product->name)) ?>', '<?= $product->price ?>')" 
-                                        class="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center text-pmh-purple hover:bg-pmh-purple hover:text-white transition-all shadow-sm">
+                                        class="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center text-primary-emerald hover:bg-primary-emerald hover:text-white transition-all shadow-sm">
                                         <i class="fas fa-cart-plus"></i>
                                     </button>
                                 <?php endif; ?>
@@ -104,7 +104,7 @@ foreach ($category_list as $current_cat):
 <!-- My OrdersHeader -->
 <div id="my-orders" class="pt-8 scroll-mt-24">
     <div class="flex items-center gap-3 mb-6">
-        <div class="w-2 h-8 bg-gradient-to-b from-pmh-yellow to-yellow-400 rounded-full"></div>
+        <div class="w-2 h-8 bg-gradient-to-b from-secondary-gold to-yellow-400 rounded-full"></div>
         <h2 class="text-xl font-bold text-gray-900">My Purchase History</h2>
     </div>
     
@@ -140,14 +140,14 @@ foreach ($category_list as $current_cat):
                     </div>
                     <div class="flex flex-col text-right">
                         <span class="text-xs text-gray-400 uppercase tracking-wider">Total</span>
-                        <span class="font-bold text-pmh-purple">RM <?= number_format((float)$order->total_price, 2) ?></span>
+                        <span class="font-bold text-primary-emerald">RM <?= number_format((float)$order->total_price, 2) ?></span>
                     </div>
                 </div>
 
                 <!-- Actions Grid -->
                 <div class="grid grid-cols-2 gap-3">
                     <a href="<?= $this->Url->build(['controller' => 'Orders', 'action' => 'viewReceipt', $order->id]) ?>" target="_blank" 
-                       class="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-purple-50 text-pmh-purple font-bold text-sm hover:bg-pmh-purple hover:text-white transition-all">
+                       class="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-purple-50 text-primary-emerald font-bold text-sm hover:bg-primary-emerald hover:text-white transition-all">
                         <i class="fas fa-file-pdf"></i> Receipt
                     </a>
                     <?= $this->Form->postLink('<i class="fas fa-trash-alt mr-2"></i> Cancel', 
@@ -193,7 +193,7 @@ foreach ($category_list as $current_cat):
                         </td>
                         <td class="px-6 py-5">
                             <div class="flex items-center justify-center gap-4">
-                                <a href="<?= $this->Url->build(['controller' => 'Orders', 'action' => 'viewReceipt', $order->id]) ?>" target="_blank" class="text-pmh-purple hover:text-pmh-purple-dark" title="Receipt"><i class="fas fa-file-pdf"></i></a>
+                                <a href="<?= $this->Url->build(['controller' => 'Orders', 'action' => 'viewReceipt', $order->id]) ?>" target="_blank" class="text-primary-emerald hover:text-primary-emerald-dark" title="Receipt"><i class="fas fa-file-pdf"></i></a>
                                 <?= $this->Form->postLink('<i class="fas fa-trash"></i>', ['controller' => 'Orders', 'action' => 'delete', $order->id], ['escape' => false, 'confirm' => __('Cancel order?'), 'class' => 'text-red-500 hover:text-red-700']) ?>
                             </div>
                         </td>
@@ -208,7 +208,7 @@ foreach ($category_list as $current_cat):
 <!-- Order Modal -->
 <div id="orderModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
     <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 opacity-0 transition-all" id="modalContent">
-        <div class="bg-gradient-to-r from-pmh-purple to-pmh-purple-dark p-6 text-white">
+        <div class="bg-gradient-to-r from-primary-emerald to-primary-emerald-dark p-6 text-white">
             <div class="flex justify-between items-center">
                 <h3 class="text-xl font-bold" id="modalProductName">Product</h3>
                 <button onclick="closeOrderModal()" class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors">
@@ -239,20 +239,16 @@ foreach ($category_list as $current_cat):
             
             <div class="bg-gradient-to-r from-purple-50 to-yellow-50 p-5 rounded-xl text-center border border-purple-100">
                 <p class="text-sm text-gray-500 mb-1">Total Amount</p>
-                <p class="text-3xl font-bold text-pmh-purple">RM <span id="displayTotal">0.00</span></p>
+                <p class="text-3xl font-bold text-primary-emerald">RM <span id="displayTotal">0.00</span></p>
             </div>
             
-            <button type="submit" class="w-full bg-gradient-to-r from-pmh-purple to-pmh-purple-dark text-white font-bold py-4 rounded-xl hover:shadow-lg transition-all">
+            <button type="submit" class="w-full bg-gradient-to-r from-primary-emerald to-primary-emerald-dark text-white font-bold py-4 rounded-xl hover:shadow-lg transition-all">
                 Confirm Pre-Order
             </button>
         <?= $this->Form->end() ?>
     </div>
 </div>
 
-<!-- Scroll to Top Button -->
-<button id="scrollTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 w-12 h-12 bg-pmh-purple text-white rounded-full shadow-lg hover:bg-pmh-purple-dark transition-all opacity-0 invisible z-40 flex items-center justify-center">
-    <i class="fas fa-arrow-up"></i>
-</button>
 
 <!-- Edit Status Modal -->
 <div id="statusModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
@@ -264,7 +260,7 @@ foreach ($category_list as $current_cat):
             <input type="hidden" name="id" id="statusProductId">
             <div class="mb-6">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">Availability Status</label>
-                <select name="status" id="statusSelect" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pmh-purple outline-none">
+                <select name="status" id="statusSelect" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-emerald outline-none">
                     <option value="open">Open (Available)</option>
                     <option value="closed">Closed (Unavailable)</option>
                 </select>
@@ -272,7 +268,7 @@ foreach ($category_list as $current_cat):
             
             <div class="flex gap-3">
                 <button type="button" onclick="closeStatusModal()" class="flex-1 px-4 py-3 bg-gray-100 text-gray-600 font-bold rounded-xl hover:bg-gray-200 transition-all">Cancel</button>
-                <button type="button" onclick="openConfirmModal()" class="flex-1 px-4 py-3 bg-pmh-purple text-white font-bold rounded-xl hover:bg-pmh-purple-dark transition-all">Change Now</button>
+                <button type="button" onclick="openConfirmModal()" class="flex-1 px-4 py-3 bg-primary-emerald text-white font-bold rounded-xl hover:bg-primary-emerald-dark transition-all">Change Now</button>
             </div>
         <?= $this->Form->end() ?>
     </div>
@@ -289,7 +285,7 @@ foreach ($category_list as $current_cat):
         
         <div class="flex gap-3">
             <button onclick="closeConfirmModal()" class="flex-1 px-4 py-3 bg-gray-100 text-gray-600 font-bold rounded-xl hover:bg-gray-200 transition-all">Cancel</button>
-            <button onclick="submitStatusForm()" class="flex-1 px-4 py-3 bg-pmh-purple text-white font-bold rounded-xl hover:bg-pmh-purple-dark transition-all">Yes, Change It</button>
+            <button onclick="submitStatusForm()" class="flex-1 px-4 py-3 bg-primary-emerald text-white font-bold rounded-xl hover:bg-primary-emerald-dark transition-all">Yes, Change It</button>
         </div>
     </div>
 </div>
@@ -386,18 +382,5 @@ function closeOrderModal() {
         document.getElementById('orderModal').classList.add('hidden');
         document.getElementById('orderModal').classList.remove('flex');
     }, 200);
-}
-
-// Scroll To Top
-const scrollTopBtn = document.getElementById('scrollTopBtn');
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-        scrollTopBtn.classList.remove('opacity-0', 'invisible');
-    } else {
-        scrollTopBtn.classList.add('opacity-0', 'invisible');
-    }
-});
-function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>

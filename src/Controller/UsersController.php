@@ -24,10 +24,13 @@ class UsersController extends AppController
         // If already authenticated via session and this is a GET, redirect appropriately
         if ($this->request->is('get') && $result->isValid()) {
             $identity = $this->Authentication->getIdentity();
+            $redirectUrl = $this->request->getQuery('redirect');
+            
             if ($identity->get('role') === 'admin') {
-                return $this->redirect(['controller' => 'Admin', 'action' => 'dashboard']);
+                return $this->redirect($redirectUrl ?: ['controller' => 'Admin', 'action' => 'dashboard']);
             }
-            return $this->redirect(['controller' => 'Pages', 'action' => 'dashboard']);
+            $this->_migrateCart($identity->get('id'));
+            return $this->redirect($redirectUrl ?: ['controller' => 'Pages', 'action' => 'dashboard']);
         }
 
         // Handle POST (form submission)
@@ -48,11 +51,16 @@ class UsersController extends AppController
                     return $this->redirect(['controller' => 'Users', 'action' => 'login']);
                 }
 
+                $redirectUrl = $this->request->getQuery('redirect');
+
                 // Redirect by role
                 if ($identity->get('role') === 'admin') {
-                    return $this->redirect(['controller' => 'Admin', 'action' => 'dashboard']);
+                    return $this->redirect($redirectUrl ?: ['controller' => 'Admin', 'action' => 'dashboard']);
                 }
-                return $this->redirect(['controller' => 'Pages', 'action' => 'dashboard']);
+                
+                $this->_migrateCart($identity->get('id'));
+                
+                return $this->redirect($redirectUrl ?: ['controller' => 'Pages', 'action' => 'dashboard']);
             }
 
             // Authentication failed
@@ -83,8 +91,16 @@ class UsersController extends AppController
             $user->status = 'active';
 
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('Registration successful! Please login with your email and password.'));
-                return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+                $this->Authentication->setIdentity($user);
+                $this->_migrateCart($user->id);
+                $this->Flash->success(__('Registration successful!'));
+                
+                // If there's a redirect query param (like from clicking checkout), go there
+                $redirectUrl = $this->request->getQuery('redirect');
+                if ($redirectUrl) {
+                    return $this->redirect($redirectUrl);
+                }
+                return $this->redirect(['controller' => 'Pages', 'action' => 'dashboard']);
             }
 
             // Collect validation errors for display
@@ -141,5 +157,40 @@ class UsersController extends AppController
         }
 
         $this->set(compact('user'));
+    }
+
+    // ── Migrate Guest Cart to User ─────────────────────────────────────────
+    protected function _migrateCart(int $userId): void
+    {
+        $sessionId = $this->request->getSession()->id();
+        $Carts = $this->fetchTable('Carts');
+        
+        $guestCart = $Carts->find()->where(['session_id' => $sessionId, 'user_id IS' => null])->first();
+        if ($guestCart) {
+            $userCart = $Carts->find()->where(['user_id' => $userId])->first();
+            
+            if ($userCart) {
+                // User already has a cart, merge items
+                $CartItems = $this->fetchTable('CartItems');
+                $guestItems = $CartItems->find()->where(['cart_id' => $guestCart->id])->all();
+                
+                foreach ($guestItems as $guestItem) {
+                    $existingItem = $CartItems->find()->where(['cart_id' => $userCart->id, 'product_id' => $guestItem->product_id])->first();
+                    if ($existingItem) {
+                        $existingItem->quantity += $guestItem->quantity;
+                        $CartItems->save($existingItem);
+                    } else {
+                        $guestItem->cart_id = $userCart->id;
+                        $CartItems->save($guestItem);
+                    }
+                }
+                // Delete empty guest cart
+                $Carts->delete($guestCart);
+            } else {
+                // User doesn't have a cart, just assign the guest cart to user
+                $guestCart->user_id = $userId;
+                $Carts->save($guestCart);
+            }
+        }
     }
 }

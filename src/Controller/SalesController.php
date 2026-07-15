@@ -18,16 +18,35 @@ class SalesController extends AppController
     public function index(): void
     {
         $OfflineSales = $this->fetchTable('OfflineSales');
+        $Orders = $this->fetchTable('Orders');
+
+        $selectedYear = (int)$this->request->getQuery('year', date('Y'));
+        $availableYears = [2024, 2025, 2026];
+
+        // Fetch offline sales
         $sales = $OfflineSales->find()
+            ->where(['YEAR(sale_date)' => $selectedYear])
             ->contain(['Users', 'OfflineSaleItems.Products'])
             ->order(['sale_date' => 'DESC'])
             ->all();
 
-        $totalRevenue = $OfflineSales->find()->all()->sumOf('total_amount') ?? 0;
+        // Fetch online orders
+        $onlineOrders = $Orders->find()
+            ->where([
+                'Orders.status IN' => ['preparing', 'shipping', 'complete'],
+                'YEAR(Orders.created_at)' => $selectedYear
+            ])
+            ->contain(['Users', 'OrderItems.Products'])
+            ->order(['Orders.created_at' => 'DESC'])
+            ->all();
+
+        $offlineRevenue = $sales->sumOf('total_amount') ?? 0;
+        $onlineRevenue = $onlineOrders->sumOf('total_amount') ?? 0;
+        $totalRevenue = $offlineRevenue + $onlineRevenue;
         
         $totalProfit = $totalRevenue * 0.5;
 
-        $this->set(compact('sales', 'totalRevenue', 'totalProfit'));
+        $this->set(compact('sales', 'onlineOrders', 'offlineRevenue', 'onlineRevenue', 'totalRevenue', 'totalProfit', 'selectedYear', 'availableYears'));
     }
 
     // GET/POST /admin/sales/add
@@ -101,7 +120,7 @@ class SalesController extends AppController
         return null;
     }
 
-    // GET /admin/sales/report?type=daily|weekly|monthly&date=...
+    // GET /admin/sales/report?type=daily|weekly|monthly|yearly&date=...
     public function report(): Response|null
     {
         $OfflineSales = $this->fetchTable('OfflineSales');
@@ -119,6 +138,10 @@ class SalesController extends AppController
             case 'monthly':
                 $start = date('Y-m-01', strtotime($date));
                 $end   = date('Y-m-t', strtotime($date));
+                break;
+            case 'yearly':
+                $start = date('Y-01-01', strtotime($date));
+                $end   = date('Y-12-31', strtotime($date));
                 break;
             default: // daily
                 $start = $end = $date;
@@ -143,6 +166,40 @@ class SalesController extends AppController
         
         $totalProfit = $grandTotal * 0.5;
 
+        // Product Performance data
+        $Products = $this->fetchTable('Products');
+        $products = $Products->find()->contain(['ProductLines'])->all();
+        $productStats = [];
+        foreach ($products as $p) {
+            $productStats[$p->id] = [
+                'name' => $p->name,
+                'line' => $p->product_line->name ?? 'Other',
+                'qty' => 0,
+                'revenue' => 0
+            ];
+        }
+
+        // Aggregate online product stats
+        foreach ($onlineOrders as $o) {
+            foreach ($o->order_items as $oi) {
+                if (isset($productStats[$oi->product_id])) {
+                    $productStats[$oi->product_id]['qty'] += $oi->quantity;
+                    $productStats[$oi->product_id]['revenue'] += $oi->subtotal;
+                }
+            }
+        }
+        // Aggregate offline product stats
+        foreach ($offlineSales as $s) {
+            foreach ($s->offline_sale_items as $oi) {
+                if (isset($productStats[$oi->product_id])) {
+                    $productStats[$oi->product_id]['qty'] += $oi->quantity;
+                    $productStats[$oi->product_id]['revenue'] += $oi->subtotal;
+                }
+            }
+        }
+        // Sort descending by revenue
+        usort($productStats, fn($a, $b) => $b['revenue'] <=> $a['revenue']);
+
         // Build PDF content using mPDF-style HTML
         $reportData = [
             'type'          => $type,
@@ -154,6 +211,7 @@ class SalesController extends AppController
             'onlineTotal'   => $onlineTotal,
             'grandTotal'    => $grandTotal,
             'totalProfit'   => $totalProfit,
+            'productStats'  => $productStats,
             'generatedAt'   => date('d/m/Y H:i'),
         ];
 

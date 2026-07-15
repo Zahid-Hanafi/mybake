@@ -691,8 +691,11 @@ tbody td { padding: 0.875rem 1rem; vertical-align: middle; }
     display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0;
     z-index: 200; overflow-y: auto;
     transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    transform: translateX(-100%);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
 }
-.admin-main { margin-left: 260px; flex: 1; min-width: 0; }
+.admin-sidebar.open { transform: translateX(0); }
+.admin-main { margin-left: 0; flex: 1; min-width: 0; }
 .admin-nav-item {
     display: flex; align-items: center; gap: 0.75rem;
     padding: 0.75rem 1.25rem; color: rgba(255,255,255,0.7);
@@ -717,7 +720,7 @@ tbody td { padding: 0.875rem 1rem; vertical-align: middle; }
 
 /* Admin Sidebar Close Button */
 .admin-sidebar-close {
-    display: none; background: rgba(255,255,255,0.15); border: none;
+    display: flex; background: rgba(255,255,255,0.15); border: none;
     color: #fff; width: 32px; height: 32px; border-radius: 8px;
     cursor: pointer; align-items: center; justify-content: center;
     transition: var(--transition); font-size: 0.9rem;
@@ -726,21 +729,14 @@ tbody td { padding: 0.875rem 1rem; vertical-align: middle; }
 
 /* Admin Burger Button */
 .admin-burger-btn {
-    display: none; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer;
     padding: 0.5rem; border-radius: 8px; transition: var(--transition);
     font-size: 1.2rem; color: var(--text-dark);
 }
 .admin-burger-btn:hover { background: var(--primary-emerald-xlight); color: var(--primary-emerald); }
 
 @media (max-width: 1024px) {
-    .admin-sidebar {
-        transform: translateX(-100%);
-        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
-    }
-    .admin-sidebar.open { transform: translateX(0); }
-    .admin-main { margin-left: 0; }
-    .admin-burger-btn { display: flex; align-items: center; justify-content: center; }
-    .admin-sidebar-close { display: flex; }
+    /* Rules already applied globally */
 }
 
 /* ── Utility ──────────────────────────────────────────── */

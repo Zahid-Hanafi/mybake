@@ -61,10 +61,10 @@
                                 <i class="fas fa-plus"></i> Restock
                             </button>
                             <button onclick="toggleProductStatus(<?= $product->id ?>, this)" 
-                                    class="btn btn-sm <?= $product->status === 'open' ? 'btn-danger' : '' ?>" 
-                                    style="<?= $product->status !== 'open' ? 'background:var(--primary-emerald); color:#fff;' : '' ?>"
+                                    class="btn btn-sm <?= $product->status === 'closed' ? 'btn-danger' : '' ?>" 
+                                    style="<?= $product->status === 'open' ? 'background:var(--primary-emerald); color:#fff;' : '' ?>"
                                     title="<?= $product->status === 'open' ? 'Close' : 'Open' ?> product">
-                                <i class="fas fa-<?= $product->status === 'open' ? 'lock' : 'lock-open' ?>"></i>
+                                <i class="fas fa-<?= $product->status === 'open' ? 'lock-open' : 'lock' ?>"></i>
                             </button>
                         </div>
                     </td>
@@ -146,12 +146,14 @@ function toggleProductStatus(id, btn) {
                 const badge = document.getElementById('statusBadge-' + id);
                 if (d.status === 'open') {
                     badge.className = 'status-badge status-open'; badge.textContent = 'Open';
-                    btn.innerHTML = '<i class="fas fa-lock"></i>';
-                    btn.className = 'btn btn-sm btn-danger';
+                    btn.innerHTML = '<i class="fas fa-lock-open"></i>';
+                    btn.className = 'btn btn-sm';
+                    btn.style.cssText = 'background:var(--primary-emerald); color:#fff;';
                 } else {
                     badge.className = 'status-badge status-closed'; badge.textContent = 'Closed';
-                    btn.innerHTML = '<i class="fas fa-lock-open"></i>';
-                    btn.style.cssText = 'background:var(--primary-emerald); color:#fff;';
+                    btn.innerHTML = '<i class="fas fa-lock"></i>';
+                    btn.className = 'btn btn-sm btn-danger';
+                    btn.style.cssText = '';
                 }
                 showFlash('success', 'Status updated successfully.');
             } else {

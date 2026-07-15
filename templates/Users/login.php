@@ -71,9 +71,8 @@ $webroot = $this->request->getAttribute('webroot');
             <!-- Flash Messages -->
             <?= $this->Flash->render() ?>
 
-            <!-- Login Form using CakePHP FormHelper -->
             <?= $this->Form->create(null, [
-                'url' => '/login',
+                'url' => $this->request->getQuery() ? '/login?' . http_build_query($this->request->getQuery()) : '/login',
                 'id'  => 'loginForm'
             ]) ?>
 
@@ -150,7 +149,7 @@ $webroot = $this->request->getAttribute('webroot');
             <div style="text-align:center; padding-top:1rem; border-top:1px solid var(--border-light);">
                 <p style="color:var(--text-muted); font-size:0.875rem;">
                     Don't have an account?
-                    <a href="<?= $this->Url->build('/register') ?>" style="color:var(--primary-emerald); font-weight:600; margin-left:0.25rem;">Create an Account</a>
+                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'register', '?' => $this->request->getQueryParams()]) ?>" style="color:var(--primary-emerald); font-weight:600; margin-left:0.25rem;">Create an Account</a>
                 </p>
             </div>
         </div>

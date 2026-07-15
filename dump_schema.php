@@ -1,0 +1,1 @@
+﻿<?php $pdo = new PDO("mysql:host=localhost;dbname=mybake", "root", ""); foreach(["users", "products", "orders", "order_items", "offline_sales"] as $table) { echo "\nTable: $table\n"; $stmt = $pdo->query("DESCRIBE $table"); foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) { echo $row["Field"]." | ".$row["Type"]."\n"; } } ?>

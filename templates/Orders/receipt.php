@@ -45,7 +45,7 @@ $this->assign('title', 'Receipt - Order #' . $order->id);
             <h2 class="receipt-title">Order Receipt</h2>
             <div class="receipt-info">
                 <div>Order #: <strong><?= $order->id ?></strong></div>
-                <div>Date: <strong><?= $order->created_at->format('d M Y') ?></strong></div>
+                <div>Date: <strong><?= $order->created_at->format('d M Y, h:i A') ?></strong></div>
                 <div>Status: <strong style="text-transform: capitalize; color: #00674F;"><?= $order->status ?></strong></div>
             </div>
         </div>

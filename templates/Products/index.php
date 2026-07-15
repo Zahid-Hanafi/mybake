@@ -124,6 +124,7 @@ foreach ($grouped as $lineId => $data):
                 <input type="number" id="modalQty" value="1" min="1" class="form-control" style="text-align:center; width:80px;" oninput="updateModalTotal()">
                 <button onclick="changeQty(1)" class="cart-qty-btn" style="width:38px; height:38px;">+</button>
             </div>
+            <div id="modalQtyError" style="color: #ef4444; font-size: 0.8rem; margin-top: 0.5rem; display: none;"></div>
         </div>
         <div style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem; background:var(--primary-emerald-xlight); border-radius:10px; margin-bottom:1.25rem;">
             <span style="font-weight:500; color:var(--text-muted);">Total</span>
@@ -131,7 +132,7 @@ foreach ($grouped as $lineId => $data):
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
             <button onclick="closeModal('addCartModal')" class="btn btn-outline">Cancel</button>
-            <button onclick="confirmAddToCart()" class="btn btn-gold"><i class="fas fa-bag-shopping"></i> Add to Cart</button>
+            <button id="modalAddToCartBtn" onclick="confirmAddToCart()" class="btn btn-gold"><i class="fas fa-bag-shopping"></i> Add to Cart</button>
         </div>
     </div>
 </div>
@@ -196,12 +197,41 @@ function changeQty(delta) {
     inp.value = v; updateModalTotal();
 }
 function updateModalTotal() {
-    const qty = parseInt(document.getElementById('modalQty').value) || 1;
+    const qtyInput = document.getElementById('modalQty');
+    let qty = parseInt(qtyInput.value) || 1;
+    const errorMsg = document.getElementById('modalQtyError');
+    const addToCartBtn = document.getElementById('modalAddToCartBtn');
+
+    if (qty > _maxStock) {
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = `Please choose a quantity up to the available stock (${_maxStock}).`;
+        if (addToCartBtn) {
+            addToCartBtn.disabled = true;
+            addToCartBtn.style.opacity = '0.5';
+            addToCartBtn.style.cursor = 'not-allowed';
+        }
+    } else if (qty < 1) {
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = `Quantity must be at least 1.`;
+        if (addToCartBtn) {
+            addToCartBtn.disabled = true;
+            addToCartBtn.style.opacity = '0.5';
+            addToCartBtn.style.cursor = 'not-allowed';
+        }
+    } else {
+        errorMsg.style.display = 'none';
+        if (addToCartBtn) {
+            addToCartBtn.disabled = false;
+            addToCartBtn.style.opacity = '1';
+            addToCartBtn.style.cursor = 'pointer';
+        }
+    }
+
     document.getElementById('modalTotal').textContent = 'RM ' + (qty * _currentPrice).toFixed(2);
 }
 function confirmAddToCart() {
     const qty = parseInt(document.getElementById('modalQty').value) || 1;
-    if (!_currentProductId) return;
+    if (!_currentProductId || qty > _maxStock || qty < 1) return;
     addToCart(_currentProductId, qty);
     closeModal('addCartModal');
 }

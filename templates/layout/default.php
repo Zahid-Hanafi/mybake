@@ -164,7 +164,7 @@
             <span style="font-weight:600; color:var(--text-muted);">Total</span>
             <span style="font-size:1.25rem; font-weight:700; color:var(--primary-emerald);" id="cartTotal">RM 0.00</span>
         </div>
-        <a href="<?= $this->Url->build('/checkout') ?>" class="btn btn-gold btn-full btn-lg">
+        <a href="<?= $identity ? $this->Url->build('/checkout') : $this->Url->build('/register?redirect=/checkout') ?>" class="btn btn-gold btn-full btn-lg">
             <i class="fas fa-credit-card"></i> Proceed to Checkout
         </a>
     </div>
@@ -256,10 +256,10 @@
                 </div>
                 <p class="footer-desc">Authentic homemade traditional snacks crafted with love from the heart of Sekinchan, Selangor. Quality you can taste in every bite.</p>
                 <div class="social-links">
-                    <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/zahid.hanafi.37" target="blank" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/zahidhnfi.__/" target="blank" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://web.whatsapp.com/+60123456789" target="blank" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.tiktok.com/@pandagaming._____" target="blank" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
                 </div>
             </div>
 
@@ -302,10 +302,7 @@
     </div>
 </footer>
 
-<!-- Scroll to Top -->
-<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
-    <i class="fas fa-chevron-up"></i>
-</button>
+
 
 <?php elseif ($isAdminPage): ?>
 <!-- ══════════════════════════════════════════════════════════
@@ -348,8 +345,8 @@
             <a href="<?= $this->Url->build('/admin/dashboard') ?>" class="admin-nav-item <?= ($action === 'dashboard') ? 'active' : '' ?>">
                 <i class="fas fa-chart-line"></i> Dashboard
             </a>
-            <a href="<?= $this->Url->build('/admin/orders') ?>" class="admin-nav-item <?= ($action === 'orders' || $action === 'updateStatus') ? 'active' : '' ?>">
-                <i class="fas fa-clipboard-list"></i> Total Orders
+            <a href="<?= $this->Url->build('/admin/orders') ?>" class="admin-nav-item <?= ($action === 'orders' || $action === 'updateStatus' || $action === 'scan' || $action === 'packingSlip' || $action === 'ship') ? 'active' : '' ?>">
+                <i class="fas fa-clipboard-list"></i> Order Management
             </a>
             <a href="<?= $this->Url->build('/admin/sales') ?>" class="admin-nav-item <?= ($controller === 'Sales') ? 'active' : '' ?>">
                 <i class="fas fa-chart-bar"></i> Sales Management
@@ -357,12 +354,7 @@
             <a href="<?= $this->Url->build('/admin/stock') ?>" class="admin-nav-item <?= ($action === 'stock' || $action === 'restock' || $action === 'toggleStatus') ? 'active' : '' ?>">
                 <i class="fas fa-boxes-stacked"></i> Stock & Products
             </a>
-            <div style="margin-top:1rem; border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem;">
-                <p style="font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.4); padding:0 0.75rem; margin-bottom:0.5rem;">Customer Site</p>
-                <a href="<?= $this->Url->build('/dashboard') ?>" class="admin-nav-item">
-                    <i class="fas fa-arrow-left"></i> Back to Store
-                </a>
-            </div>
+
         </nav>
 
         <div style="padding:1rem 0.75rem; border-top:1px solid rgba(255,255,255,0.1);">
@@ -406,8 +398,11 @@
 
 <!-- Flash Messages (for customer layout) -->
 <?php if (!$isAuthPage && !$isAdminPage): ?>
-<div id="flashContainer" style="position:fixed; top:80px; right:1rem; z-index:1000; width:320px;"></div>
+<div id="flashContainer" class="flash-container"></div>
+
 <?php endif; ?>
+
+
 
 <!-- ── SCRIPTS ─────────────────────────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -601,13 +596,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// ── Scroll to Top ────────────────────────────────────
-const scrollBtn = document.getElementById('scrollTopBtn');
-if (scrollBtn) {
-    window.addEventListener('scroll', () => {
-        scrollBtn.classList.toggle('visible', window.scrollY > 400);
-    });
-}
 
 // ── Logout Confirm ───────────────────────────────────
 function confirmLogout(e, url) {

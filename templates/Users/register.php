@@ -62,7 +62,7 @@
             <?= $this->Flash->render() ?>
 
             <?= $this->Form->create($user, [
-                'url' => ['controller' => 'Users', 'action' => 'register'],
+                'url' => $this->request->getQuery() ? '/register?' . http_build_query($this->request->getQuery()) : '/register',
                 'id'  => 'registerForm',
             ]) ?>
 
@@ -197,7 +197,7 @@
             <div style="text-align:center; padding-top:1rem; border-top:1px solid var(--border-light);">
                 <p style="color:var(--text-muted); font-size:0.875rem;">
                     Already have an account?
-                    <a href="<?= $this->Url->build('/login') ?>" style="color:var(--primary-emerald); font-weight:600; margin-left:0.25rem;">Sign In</a>
+                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login', '?' => $this->request->getQueryParams()]) ?>" style="color:var(--primary-emerald); font-weight:600; margin-left:0.25rem;">Sign In</a>
                 </p>
             </div>
         </div>

@@ -34,21 +34,23 @@ class AppController extends Controller
     protected function setCartCount(): void
     {
         $identity = $this->Authentication->getIdentity();
-        if ($identity) {
-            $Carts = $this->fetchTable('Carts');
-            $cart = $Carts->find()
-                ->where(['user_id' => $identity->get('id')])
-                ->contain(['CartItems'])
-                ->first();
-            $count = 0;
-            if ($cart && !empty($cart->cart_items)) {
-                foreach ($cart->cart_items as $item) {
-                    $count += $item->quantity;
-                }
+        $userId = $identity ? $identity->get('id') : null;
+        $sessionId = $this->request->getSession()->id();
+        
+        $Carts = $this->fetchTable('Carts');
+        $conditions = $userId ? ['user_id' => $userId] : ['session_id' => $sessionId];
+        
+        $cart = $Carts->find()
+            ->where($conditions)
+            ->contain(['CartItems'])
+            ->first();
+            
+        $count = 0;
+        if ($cart && !empty($cart->cart_items)) {
+            foreach ($cart->cart_items as $item) {
+                $count += $item->quantity;
             }
-            $this->set('cartCount', $count);
-        } else {
-            $this->set('cartCount', 0);
         }
+        $this->set('cartCount', $count);
     }
 }

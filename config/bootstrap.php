@@ -213,6 +213,10 @@ ServerRequest::addDetector('tablet', function ($request) {
 // There is no time-specific type in Cake
 TypeFactory::map('time', StringType::class);
 
+$appTimezone = Configure::read('App.defaultTimezone');
+TypeFactory::build('datetime')->setDatabaseTimezone($appTimezone);
+TypeFactory::build('timestamp')->setDatabaseTimezone($appTimezone);
+
 /*
  * Custom Inflector rules, can be set to correctly pluralize or singularize
  * table, model, controller names or whatever other string is passed to the

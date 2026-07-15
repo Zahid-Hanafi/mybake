@@ -8,7 +8,7 @@
 
 <!-- Summary Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-    <div class="bg-gradient-to-br from-pmh-purple to-pmh-purple-dark rounded-2xl p-6 text-white relative overflow-hidden">
+    <div class="bg-gradient-to-br from-primary-emerald to-primary-emerald-dark rounded-2xl p-6 text-white relative overflow-hidden">
         <div class="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
         <p class="text-purple-200 text-sm">Total Orders</p>
         <p class="text-4xl font-bold mt-2"><?= count($orders) ?></p>
@@ -29,7 +29,7 @@
     <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
         <div class="flex justify-between items-start mb-4">
             <div>
-                <p class="font-bold text-pmh-purple">#PMH-<?= $order->id ?></p>
+                <p class="font-bold text-primary-emerald">#MyBake-<?= $order->id ?></p>
                 <p class="text-xs text-gray-400"><?= $order->created_at->format('d M Y') ?></p>
             </div>
             <?php 
@@ -59,12 +59,12 @@
         <div class="pt-4 border-t border-gray-50">
             <p class="text-xs text-gray-400 uppercase font-bold mb-2">Update Status</p>
             <?= $this->Form->create(null, ['url' => ['action' => 'updateStatus', $order->id], 'class' => 'flex gap-3']) ?>
-                <select name="status" class="flex-1 text-sm border border-gray-200 rounded-xl px-3 py-2 focus:ring-2 focus:ring-pmh-purple outline-none bg-white">
+                <select name="status" class="flex-1 text-sm border border-gray-200 rounded-xl px-3 py-2 focus:ring-2 focus:ring-primary-emerald outline-none bg-white">
                     <option value="pending" <?= $order->status == 'pending' ? 'selected' : '' ?>>Pending</option>
                     <option value="waiting for pickup" <?= $order->status == 'waiting for pickup' ? 'selected' : '' ?>>Waiting for Pickup</option>
                     <option value="complete" <?= $order->status == 'complete' ? 'selected' : '' ?>>Complete</option>
                 </select>
-                <button type="submit" class="bg-gradient-to-r from-pmh-purple to-pmh-purple-dark text-white px-4 py-2 rounded-xl hover:shadow-lg transition-all font-medium text-sm">
+                <button type="submit" class="bg-gradient-to-r from-primary-emerald to-primary-emerald-dark text-white px-4 py-2 rounded-xl hover:shadow-lg transition-all font-medium text-sm">
                     <i class="fas fa-save"></i>
                 </button>
             <?= $this->Form->end() ?>
@@ -90,7 +90,7 @@
                 <?php foreach ($orders as $order): ?>
                 <tr class="hover:bg-gray-50 transition-colors">
                     <td class="px-6 py-5">
-                        <p class="font-bold text-pmh-purple">#PMH-<?= $order->id ?></p>
+                        <p class="font-bold text-primary-emerald">#MyBake-<?= $order->id ?></p>
                         <p class="text-sm text-gray-400"><?= $order->created_at->format('d M Y') ?></p>
                     </td>
                     <td class="px-6 py-5">
@@ -114,12 +114,12 @@
                     </td>
                     <td class="px-6 py-5">
                         <?= $this->Form->create(null, ['url' => ['action' => 'updateStatus', $order->id], 'class' => 'flex items-center gap-2']) ?>
-                            <select name="status" class="text-sm border border-gray-200 rounded-xl px-3 py-2 focus:ring-2 focus:ring-pmh-purple outline-none bg-white">
+                            <select name="status" class="text-sm border border-gray-200 rounded-xl px-3 py-2 focus:ring-2 focus:ring-primary-emerald outline-none bg-white">
                                 <option value="pending" <?= $order->status == 'pending' ? 'selected' : '' ?>>Pending</option>
                                 <option value="waiting for pickup" <?= $order->status == 'waiting for pickup' ? 'selected' : '' ?>>Waiting for Pickup</option>
                                 <option value="complete" <?= $order->status == 'complete' ? 'selected' : '' ?>>Complete</option>
                             </select>
-                            <button type="submit" class="bg-gradient-to-r from-pmh-purple to-pmh-purple-dark text-white p-2.5 rounded-xl hover:shadow-lg transition-all">
+                            <button type="submit" class="bg-gradient-to-r from-primary-emerald to-primary-emerald-dark text-white p-2.5 rounded-xl hover:shadow-lg transition-all">
                                 <i class="fas fa-save"></i>
                             </button>
                         <?= $this->Form->end() ?>

@@ -14,14 +14,21 @@ class CartsController extends AppController
     }
 
     // Get or create user's cart
-    private function getOrCreateCart(int $userId): object
+    private function getOrCreateCart(?int $userId = null, ?string $sessionId = null): object
     {
+        $conditions = [];
+        if ($userId) {
+            $conditions['user_id'] = $userId;
+        } else {
+            $conditions['session_id'] = $sessionId;
+        }
+
         $cart = $this->Carts->find()
-            ->where(['user_id' => $userId])
+            ->where($conditions)
             ->first();
 
         if (!$cart) {
-            $cart = $this->Carts->newEntity(['user_id' => $userId]);
+            $cart = $this->Carts->newEntity($conditions);
             $this->Carts->save($cart);
         }
         return $cart;
@@ -32,17 +39,20 @@ class CartsController extends AppController
     {
         $this->setCartCount();
         $identity = $this->Authentication->getIdentity();
+        $userId = $identity ? $identity->get('id') : null;
+        
+        $session = $this->request->getSession();
+        $session->write('GuestCart.active', true);
+        $sessionId = $session->id();
+        
         $CartItems = $this->fetchTable('CartItems');
 
         $items = [];
         $total = 0;
         $cart = null;
 
-        if ($identity) {
-            $cart = $this->Carts->find()
-                ->where(['user_id' => $identity->get('id')])
-                ->first();
-        }
+        $conditions = $userId ? ['user_id' => $userId] : ['session_id' => $sessionId];
+        $cart = $this->Carts->find()->where($conditions)->first();
 
         $items = [];
         $total = 0;
@@ -72,10 +82,12 @@ class CartsController extends AppController
     {
         $this->request->allowMethod(['post']);
         $identity = $this->Authentication->getIdentity();
-        if (!$identity) {
-            return $this->response->withType('json')->withStringBody(json_encode(['error' => 'unauthenticated', 'redirect' => \Cake\Routing\Router::url('/register')]));
-        }
-        $userId = $identity->get('id');
+        $userId = $identity ? $identity->get('id') : null;
+        
+        $session = $this->request->getSession();
+        $session->write('GuestCart.active', true);
+        $sessionId = $session->id();
+        
         $productId  = (int)$this->request->getData('product_id');
         $quantity   = (int)$this->request->getData('quantity', 1);
 
@@ -87,7 +99,7 @@ class CartsController extends AppController
                 ->withStringBody(json_encode(['error' => 'Product unavailable or insufficient stock.']));
         }
 
-        $cart      = $this->getOrCreateCart($userId);
+        $cart      = $this->getOrCreateCart($userId, $sessionId);
         $CartItems = $this->fetchTable('CartItems');
 
         // Check if already in cart
@@ -125,11 +137,17 @@ class CartsController extends AppController
     {
         $this->request->allowMethod(['post', 'put']);
         $identity  = $this->Authentication->getIdentity();
+        $userId = $identity ? $identity->get('id') : null;
+        
+        $session = $this->request->getSession();
+        $session->write('GuestCart.active', true);
+        $sessionId = $session->id();
+        
         $quantity  = (int)$this->request->getData('quantity', 1);
         $CartItems = $this->fetchTable('CartItems');
 
         $item = $CartItems->get($id, ['contain' => ['Carts']]);
-        if ($item->cart->user_id !== $identity->get('id')) {
+        if (($userId && $item->cart->user_id !== $userId) || (!$userId && $item->cart->session_id !== $sessionId)) {
             return $this->response->withStatus(403)->withStringBody(json_encode(['error' => 'Forbidden']));
         }
 
@@ -158,17 +176,24 @@ class CartsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $identity  = $this->Authentication->getIdentity();
+        $userId = $identity ? $identity->get('id') : null;
+        
+        $session = $this->request->getSession();
+        $session->write('GuestCart.active', true);
+        $sessionId = $session->id();
+        
         $CartItems = $this->fetchTable('CartItems');
 
         $item = $CartItems->get($id, ['contain' => ['Carts']]);
-        if ($item->cart->user_id !== $identity->get('id')) {
+        if (($userId && $item->cart->user_id !== $userId) || (!$userId && $item->cart->session_id !== $sessionId)) {
             return $this->response->withStatus(403)->withStringBody(json_encode(['error' => 'Forbidden']));
         }
 
         $CartItems->delete($item);
 
+        $conditions = $userId ? ['user_id' => $userId] : ['session_id' => $sessionId];
         $cart  = $this->fetchTable('Carts')->find()
-            ->where(['user_id' => $identity->get('id')])
+            ->where($conditions)
             ->contain(['CartItems.Products'])
             ->first();
 
@@ -189,8 +214,16 @@ class CartsController extends AppController
     public function count(): Response
     {
         $identity  = $this->Authentication->getIdentity();
+        $userId = $identity ? $identity->get('id') : null;
+        
+        $session = $this->request->getSession();
+        $session->write('GuestCart.active', true);
+        $sessionId = $session->id();
+        
         $CartItems = $this->fetchTable('CartItems');
-        $cart = $this->Carts->find()->where(['user_id' => $identity->get('id')])->first();
+        
+        $conditions = $userId ? ['user_id' => $userId] : ['session_id' => $sessionId];
+        $cart = $this->Carts->find()->where($conditions)->first();
         $count = $cart ? ($CartItems->find()->where(['cart_id' => $cart->id])->all()->sumOf('quantity') ?? 0) : 0;
         return $this->response->withType('json')->withStringBody(json_encode(['count' => $count]));
     }
