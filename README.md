@@ -140,7 +140,7 @@ This is the **primary testing account** for exploring the customer features. Use
 | Field       | Value                |
 |-------------|----------------------|
 | Name        | Testing Customer     |
-| Email       | `testing@example.com`|
+| Email       | `zahid@gmail.com`|
 | Password    | `Customer@123`       |
 
 > **💡 Tip:** Login as **Customer** first to add items to your cart and checkout. Then use the **Admin** account to process the order, update the shipping status, and view the impact on the analytics dashboard.
