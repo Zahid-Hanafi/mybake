@@ -51,23 +51,21 @@
 
         <div style="display:flex; align-items:center; gap:0.5rem; margin-top:1rem; padding-top:0.875rem; border-top:1px solid var(--border-light);">
             <?php if (!$address->is_default): ?>
-            <form method="post" action="<?= $this->Url->build('/profile/addresses/default/' . $address->id) ?>" style="margin:0;">
-                <?= $this->Form->hidden('_csrfToken', ['id' => false]) ?>
+            <?= $this->Form->create(null, ['url' => '/profile/addresses/default/' . $address->id, 'style' => 'margin:0;']) ?>
                 <button type="submit" class="btn btn-outline btn-sm">
                     <i class="fas fa-check-circle"></i> Set as Default
                 </button>
-            </form>
+            <?= $this->Form->end() ?>
             <?php endif; ?>
             <a href="<?= $this->Url->build('/profile/addresses/edit/' . $address->id) ?>" class="btn btn-outline btn-sm">
                 <i class="fas fa-pencil"></i> Edit
             </a>
             <?php if (!$address->is_default): ?>
-            <form method="post" action="<?= $this->Url->build('/profile/addresses/delete/' . $address->id) ?>" style="margin:0;" onsubmit="return confirm('Remove this address?')">
-                <?= $this->Form->hidden('_csrfToken', ['id' => false]) ?>
+            <?= $this->Form->create(null, ['url' => '/profile/addresses/delete/' . $address->id, 'style' => 'margin:0;', 'onsubmit' => "return confirm('Remove this address?')"]) ?>
                 <button type="submit" class="btn btn-sm" style="background:#FFF1F2; color:#DC2626; border:none;">
                     <i class="fas fa-trash-alt"></i> Delete
                 </button>
-            </form>
+            <?= $this->Form->end() ?>
             <?php endif; ?>
         </div>
     </div>

@@ -50,3 +50,6 @@ nbproject/*
 # yarn
 yarn-debug.log
 yarn-error.log
+
+# Lecturer notes (local only, not for version control)
+/notes/*

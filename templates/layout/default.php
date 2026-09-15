@@ -460,8 +460,11 @@ function closeCart() {
     document.getElementById('cartOverlay').classList.remove('open');
 }
 
+// Base cart URL (respects subfolder / base path)
+const CART_BASE_URL = '<?= $this->Url->build('/cart') ?>';
+
 function loadCart() {
-    fetch('<?= $this->Url->build('/cart') ?>', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    fetch(CART_BASE_URL, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(r => r.json())
         .catch(() => null)
         .then(data => { if (data) renderCart(data); });
@@ -518,22 +521,28 @@ function renderCart(data) {
 }
 
 function updateCartItem(id, qty) {
-    fetch(`/cart/update/${id}`, {
+    const formData = new FormData();
+    formData.append('quantity', qty);
+    fetch(`${CART_BASE_URL}/update/${id}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-        body: JSON.stringify({ quantity: qty })
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        body: formData
     }).then(r => r.json()).then(d => {
         if (d.success) loadCart();
-    });
+        else if (d.error) showFlash('error', d.error);
+    }).catch(() => showFlash('error', 'Failed to update cart.'));
 }
 
 function removeCartItem(id) {
-    fetch(`/cart/remove/${id}`, {
+    const formData = new FormData();
+    fetch(`${CART_BASE_URL}/remove/${id}`, {
         method: 'POST',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        body: formData
     }).then(r => r.json()).then(d => {
         if (d.success) loadCart();
-    });
+        else if (d.error) showFlash('error', d.error);
+    }).catch(() => showFlash('error', 'Failed to remove item.'));
 }
 
 function addToCart(productId, quantity) {

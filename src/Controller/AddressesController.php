@@ -28,8 +28,12 @@ class AddressesController extends AppController
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
             $address->user_id = $identity->get('id');
 
-            // If this is the first address, set as default
+            // Enforce maximum of 5 addresses per user
             $count = $this->Addresses->find()->where(['user_id' => $identity->get('id')])->count();
+            if ($count >= 5) {
+                $this->Flash->error(__('You can only save up to 5 addresses.'));
+                return $this->redirect(['action' => 'index']);
+            }
             if ($count === 0 || (bool)$this->request->getData('is_default')) {
                 $this->Addresses->updateAll(['is_default' => 0], ['user_id' => $identity->get('id')]);
                 $address->is_default = 1;
@@ -99,13 +103,15 @@ class AddressesController extends AppController
         $address  = $this->Addresses->get($id);
 
         if ($address->user_id !== $identity->get('id')) {
-            return $this->response->withStatus(403)->withStringBody(json_encode(['error' => 'Forbidden']));
+            $this->Flash->error(__('Access denied.'));
+            return $this->redirect(['action' => 'index']);
         }
 
         $this->Addresses->updateAll(['is_default' => 0], ['user_id' => $identity->get('id')]);
         $address->is_default = 1;
         $this->Addresses->save($address);
 
-        return $this->response->withType('json')->withStringBody(json_encode(['success' => true]));
+        $this->Flash->success(__('Default address updated.'));
+        return $this->redirect(['action' => 'index']);
     }
 }
